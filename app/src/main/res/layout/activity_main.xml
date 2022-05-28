@@ -1,47 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:gravity="center"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/recommend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="추천"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="174dp" />
 
     <Button
-        android:id="@+id/pick"
-        android:layout_width="149dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="39dp"
-        android:layout_marginBottom="14dp"
-        android:text="사진 추가"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/totalPhotos"
-        app:layout_constraintTop_toTopOf="@+id/totalPhotos"
-        tools:ignore="MissingConstraints" />
+        android:id="@+id/closet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="옷장"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="320dp" />
 
-    <TextView
-        android:id="@+id/totalPhotos"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="73dp"
-        android:layout_marginEnd="45dp"
-        android:layout_marginBottom="2dp"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-        app:layout_constraintEnd_toStartOf="@+id/pick"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+    <Button
+        android:id="@+id/savedCloth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="저장한 옷"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="463dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="408dp"
-        android:layout_height="546dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalPhotos"
-        tools:ignore="MissingConstraints" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

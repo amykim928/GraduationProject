@@ -3,43 +3,83 @@ package com.example.closet_app
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.*
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.closet_app.databinding.ActivityClosetBinding
+import com.example.closet_app.tracker.MultiBoxTracker
+import com.example.graduateproject.classfiers.YoloClassfier
+import com.example.graduateproject.classfiers.YoloInterfaceClassfier
+import com.example.graduateproject.env.ImageUtils
+import com.example.graduateproject.env.Utils
+import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ClosetActivity : AppCompatActivity() {
-    var recyclerView: RecyclerView? = null
-    var textView: TextView? = null
-    var pick: Button? = null
-    var uri = ArrayList<Uri>()
 
-    var adapter: RecyclerAdapter? = null
+    //lateinit var는 나중에 초기화를 하겠다는 선언입니다.
+    //var : x? 로 정의하는 것도 좋지만, !!를 붙여야하는게 피곤해서 이렇게 바꿔봤습니다.
+    lateinit var binding: ActivityClosetBinding
+    lateinit  var recyclerView: RecyclerView
+
+
+    var uri = ArrayList<Uri>()
+    lateinit var adapter: RecyclerAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_closet)
 
-        val gohome: Button = findViewById<View>(R.id.gohome) as Button
+        binding=ActivityClosetBinding.inflate(layoutInflater)
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
+
+        //onCreate에 너무 많으니 정신없어서 initVariable로 분리했습니다.
+        initVariable()
+
+    }
+
+
+    //lateinit var들을 초기화하고, 기능을 정의하는 함수입니다.
+    //oncreate에 변수가 너무 많아, 분리했습니다.
+    private fun initVariable() {
+
+        val gohome=binding.gohome
+        recyclerView=binding.recyclerView
+
+        val pick=binding.pick
+        adapter = RecyclerAdapter(uri)
+
+        recyclerView.layoutManager=LinearLayoutManager(this@ClosetActivity,LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = adapter
+
+
+        pick.setOnClickListener {
+            val myIntent=Intent(this,DetectActivity::class.java)
+            startActivity(myIntent)
+        }
         gohome.setOnClickListener {
             val myIntent = Intent(this, MainActivity::class.java)
             startActivity(myIntent)
         }
 
 
-        textView = findViewById(R.id.totalPhotos)
-        recyclerView = findViewById(R.id.recyclerView)
-        pick = findViewById(R.id.pick)
-        adapter = RecyclerAdapter(uri)
-        recyclerView?.setLayoutManager(GridLayoutManager(this@ClosetActivity, 4))
-        recyclerView?.setAdapter(adapter)
         if (ContextCompat.checkSelfPermission(
                 this@ClosetActivity,
                 Manifest.permission.READ_EXTERNAL_STORAGE
@@ -51,33 +91,8 @@ class ClosetActivity : AppCompatActivity() {
                 Read_Permission
             )
         }
-        pick?.setOnClickListener(View.OnClickListener {
-            val intent = Intent()
-            intent.type = "image/*"
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            }
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1)
-        })
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            if (data!!.clipData != null) {
-                val x = data.clipData!!.itemCount
-                for (i in 0 until x) {
-                    uri.add(data.clipData!!.getItemAt(i).uri)
-                }
-                adapter!!.notifyDataSetChanged()
-                textView!!.text = "옷장(" + uri.size + ")"
-            } else if (data.data != null) {
-                val imageURL = data.data!!.path
-                uri.add(Uri.parse(imageURL))
-            }
-        }
-    }
 
     companion object {
         private const val Read_Permission = 101

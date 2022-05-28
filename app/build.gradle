@@ -6,6 +6,7 @@ plugins {
 android {
     compileSdk 32
 
+
     defaultConfig {
         applicationId "com.example.closet_app"
         minSdk 28
@@ -15,6 +16,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     buildTypes {
         release {
@@ -29,13 +31,27 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
+    //모델
+    // 구현을 위한 추가 옵션
+    lintOptions {
+        abortOnError false
+    }
+    aaptOptions {
+        noCompress "tflite"
+    }
     viewBinding{
         enabled = true
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.3.0'
+    implementation 'org.tensorflow:tensorflow-lite:2.3.0'
+    implementation 'androidx.activity:activity-ktx:1.6.0-alpha04'
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'

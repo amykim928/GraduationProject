@@ -6,24 +6,175 @@
     android:layout_height="match_parent"
     tools:context=".RecommendActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="9dp"
-        android:layout_marginBottom="26dp"
-        android:text="recommend"
-        app:layout_constraintBottom_toTopOf="@+id/gohome"
-        app:layout_constraintEnd_toEndOf="@+id/gohome" />
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/result"
+                    android:layout_width="112dp"
+                    android:layout_height="64dp"
+                    android:paddingTop="20dp"
+                    android:text="선택결과"
+                    android:textColor="#000000"
+                    android:textSize="24sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="393dp"
+                        android:layout_height="295dp"
+                         />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_marginTop="20dp"
+                    android:background="#000000" />"
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="112dp"
+                        android:layout_height="52dp"
+                        android:paddingTop="10dp"
+                        android:text="만족도"
+                        android:textColor="#000000"
+                        android:textSize="24sp" />
+
+                    <RadioGroup
+                        android:id="@+id/gSatisfaction"
+                        android:layout_width="match_parent"
+                        android:layout_height="86dp"
+                        android:orientation="horizontal"
+                        android:paddingRight="2dp">
+
+                        <RadioButton
+                            android:id="@+id/veryUnsatisfied"
+                            android:layout_width="72dp"
+                            android:layout_height="match_parent"
+                            android:text="매우 불만족(1점)"
+                            android:textSize="8sp" />
+
+                        <RadioButton
+                            android:id="@+id/unsatisfied"
+                            android:layout_width="72dp"
+                            android:layout_height="match_parent"
+                            android:text="불만족(2점)"
+                            android:textSize="8sp" />
+
+                        <RadioButton
+                            android:id="@+id/good"
+                            android:layout_width="72dp"
+                            android:layout_height="match_parent"
+                            android:text="보통(3점)"
+                            android:textSize="8sp" />
+
+                        <RadioButton
+                            android:id="@+id/satisfied"
+                            android:layout_width="72dp"
+                            android:layout_height="match_parent"
+                            android:text="만족(4점)"
+                            android:textSize="8sp" />
+
+                        <RadioButton
+                            android:id="@+id/verySatisfied"
+                            android:layout_width="72dp"
+                            android:layout_height="match_parent"
+                            android:text="매우 만족(5점)"
+                            android:textSize="8sp" />
+
+                    </RadioGroup>
+
+                    <Button
+                        android:id="@+id/saveSatisfaction"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="140dp"
+                        android:backgroundTint="#A476F6"
+                        android:text="평가 저장" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+
+                    android:layout_marginTop="20dp"
+                    android:background="#000000" />"
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="66dp"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+                    <Button
+                        android:id="@+id/saveResult"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:backgroundTint="#A476F6"
+                        android:text="결과 저장" />
+
+                    <Button
+                        android:id="@+id/retry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:backgroundTint="#A476F6"
+                        android:text="다시하기" />
+
+                    <Button
+                        android:id="@+id/goCloset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#A476F6"
+                        android:text="옷장으로" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/gohome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="282dp"
+        android:layout_marginBottom="21dp"
         android:gravity="center"
-        android:text="Button"
+        android:text="Go Home"
+        android:backgroundTint="#A476F6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_gravity="center"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

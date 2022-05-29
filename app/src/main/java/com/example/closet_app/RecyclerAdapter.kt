@@ -1,13 +1,16 @@
 package com.example.closet_app
 
-import android.net.Uri
+import android.graphics.Bitmap
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerAdapter(private val uriArrayList: ArrayList<Uri>) :
+
+class RecyclerAdapter(private val bitArrayList: ArrayList<Bitmap>) :
     RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -16,20 +19,20 @@ class RecyclerAdapter(private val uriArrayList: ArrayList<Uri>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.imageView.setImageURI(uriArrayList[position])
+        holder.imageView.setImageBitmap(bitArrayList[position])
+        holder.nameText.text="사진"
 
-        print(uriArrayList[position])
+        Log.d("position",bitArrayList[position].toString())
     }
 
     override fun getItemCount(): Int {
-        return uriArrayList.size
+        return bitArrayList.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var imageView: ImageView
+        val imageView: ImageView =itemView.findViewById(R.id.bitimg)
+        val nameText:TextView = itemView.findViewById(R.id.nameText)
 
-        init {
-            imageView = itemView.findViewById(R.id.image)
-        }
+
     }
 }

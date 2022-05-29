@@ -3,33 +3,18 @@ package com.example.closet_app
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.provider.MediaStore
 import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.closet_app.databinding.ActivityClosetBinding
-import com.example.closet_app.tracker.MultiBoxTracker
-import com.example.graduateproject.classfiers.YoloClassfier
-import com.example.graduateproject.classfiers.YoloInterfaceClassfier
-import com.example.graduateproject.env.ImageUtils
-import com.example.graduateproject.env.Utils
-import java.io.IOException
-import java.util.*
+import java.io.File
 import kotlin.collections.ArrayList
 
 class ClosetActivity : AppCompatActivity() {
@@ -39,8 +24,8 @@ class ClosetActivity : AppCompatActivity() {
     lateinit var binding: ActivityClosetBinding
     lateinit  var recyclerView: RecyclerView
 
-
-    var uri = ArrayList<Uri>()
+    //detectActivity에서 ArrayList<Uri>를 건네주는 식으로 바꾸려고 하네요.
+    val bit = ArrayList<Bitmap>()
     lateinit var adapter: RecyclerAdapter
 
 
@@ -51,7 +36,19 @@ class ClosetActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //onCreate에 너무 많으니 정신없어서 initVariable로 분리했습니다.
+        setBits()
         initVariable()
+
+    }
+
+    private fun setBits() {
+        val file = File(filesDir.toString())
+        val files = file.listFiles()
+
+        for (tempFile in files!!) {
+            val path=filesDir.toString()+"/"+tempFile.name
+            bit.add(BitmapFactory.decodeFile(path))
+        }
 
     }
 
@@ -59,14 +56,13 @@ class ClosetActivity : AppCompatActivity() {
     //lateinit var들을 초기화하고, 기능을 정의하는 함수입니다.
     //oncreate에 변수가 너무 많아, 분리했습니다.
     private fun initVariable() {
-
-        val gohome=binding.gohome
+        val goHome=binding.gohome
         recyclerView=binding.recyclerView
 
         val pick=binding.pick
-        adapter = RecyclerAdapter(uri)
+        adapter = RecyclerAdapter(bit)
 
-        recyclerView.layoutManager=LinearLayoutManager(this@ClosetActivity,LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager=LinearLayoutManager(this@ClosetActivity,LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
 
 
@@ -74,7 +70,7 @@ class ClosetActivity : AppCompatActivity() {
             val myIntent=Intent(this,DetectActivity::class.java)
             startActivity(myIntent)
         }
-        gohome.setOnClickListener {
+        goHome.setOnClickListener {
             val myIntent = Intent(this, MainActivity::class.java)
             startActivity(myIntent)
         }

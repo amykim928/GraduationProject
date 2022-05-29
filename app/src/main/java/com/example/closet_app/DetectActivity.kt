@@ -109,7 +109,8 @@ class DetectActivity : AppCompatActivity() {
         // 기본 이미지 .267.jpg를 가져옵니다. (asset에 기본 파일을 저장함)
         val source = Utils.getBitmapFromAsset(this@DetectActivity, "267.jpg")
         bitmap= source?.let { Utils.processBitmap(it,TF_OD_API_INPUT_SIZE) }!!
-        binding.thisPhoto.setImageBitmap(source.let { Utils.processBitmap(it,TF_OD_API_INPUT_SIZE) })
+        imageView.setImageBitmap(source.let { Utils.processBitmap(it,TF_OD_API_INPUT_SIZE) })
+
 
         //startActivityforResult가 현재 지원 종료상태라, registerForActivityResult로 바꾸어봤습니다.
         getImgBtn.setOnClickListener(View.OnClickListener {
@@ -149,23 +150,15 @@ class DetectActivity : AppCompatActivity() {
     val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         // 이미지의 uri값을 활용해 main activity의 이미지 뷰 변경
         binding.thisPhoto.setImageURI(uri)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            Toast.makeText(this,"Bitmap 얻어오기", Toast.LENGTH_SHORT).show()
-            bitmap=
-                Utils.processBitmap(
-                    ImageDecoder.decodeBitmap(
-                        ImageDecoder.createSource(contentResolver,uri!!),
-                        ImageDecoder.OnHeaderDecodedListener { decoder, info, source ->
-                            decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
-                            decoder.isMutableRequired = true
-                        }),TF_OD_API_INPUT_SIZE)
-        }
-
-        //sdk 버전이 낮으면 아래를 쓸 수 있는데 윗경우를 권장합니다.
-        else{
-            Toast.makeText(this,"Bitmap 얻어오기2", Toast.LENGTH_SHORT).show()
-            bitmap= MediaStore.Images.Media.getBitmap(contentResolver,uri)
-        }
+        Toast.makeText(this,"Bitmap 얻어오기", Toast.LENGTH_SHORT).show()
+        bitmap=
+            Utils.processBitmap(
+                ImageDecoder.decodeBitmap(
+                    ImageDecoder.createSource(contentResolver,uri!!),
+                    ImageDecoder.OnHeaderDecodedListener { decoder, info, source ->
+                        decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
+                        decoder.isMutableRequired = true
+                    }),TF_OD_API_INPUT_SIZE)
         binding.thisPhoto.setImageBitmap(bitmap)
     }
 

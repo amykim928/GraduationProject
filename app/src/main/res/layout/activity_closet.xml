@@ -54,11 +54,24 @@
         android:layout_marginTop="55dp"
         android:layout_marginEnd="68dp"
         android:layout_marginBottom="83dp"
-        android:text="Button"
+        android:text="Go Home"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/totalPhotos"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="4dp"
+        android:text="옷장"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/totalPhotos"
+        app:layout_constraintStart_toStartOf="@+id/totalPhotos" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

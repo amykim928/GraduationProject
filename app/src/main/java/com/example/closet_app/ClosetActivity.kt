@@ -33,6 +33,11 @@ class ClosetActivity : AppCompatActivity() {
             startActivity(myIntent)
         }
 
+        val result: Button = findViewById<View>(R.id.result) as Button
+        result.setOnClickListener {
+            val myIntent = Intent(this, ClosetResultActivity::class.java)
+            startActivity(myIntent)
+        }
 
         textView = findViewById(R.id.totalPhotos)
         recyclerView = findViewById(R.id.recyclerView)

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="color">
+        <item>색상</item>
+        <item>블랙</item>
+        <item>화이트</item>
+        <item>그레이</item>
+        <item>레드</item>
+        <item>핑크</item>
+        <item>오렌지</item>
+        <item>베이지</item>
+        <item>브라운</item>
+        <item>옐로우</item>
+        <item>그린</item>
+        <item>카키</item>
+        <item>실버</item>
+        <item>에프리콧</item>
+        <item>레인보우</item>
+    </string-array>
+</resources>

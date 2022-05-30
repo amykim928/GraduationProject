@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         val recommend: Button = findViewById<View>(R.id.recommend) as Button
         val closet: Button = findViewById<View>(R.id.closet) as Button
         val savedCloth: Button = findViewById<View>(R.id.savedCloth) as Button
+        val temp: Button = findViewById<View>(R.id.temp) as Button
 
         recommend.setOnClickListener {
             val myIntent = Intent(this, RecommendActivity::class.java)
@@ -35,6 +36,11 @@ class MainActivity : AppCompatActivity() {
 
         savedCloth.setOnClickListener {
             val myIntent = Intent(this, SavedClothActivity::class.java)
+            startActivity(myIntent)
+        }
+
+        temp.setOnClickListener {
+            val myIntent = Intent(this, SpinnerActivity::class.java)
             startActivity(myIntent)
         }
 

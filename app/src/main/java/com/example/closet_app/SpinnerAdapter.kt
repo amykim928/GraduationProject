@@ -8,13 +8,9 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 
-class SpinnerAdapter(internal var context: Context, internal var colorShapeData: Array<String>, internal var colorTextData: Array<String>) :
+class SpinnerAdapter(internal var context: Context, private var colorShapeData: Array<String>, private var colorTextData: Array<String>) :
     BaseAdapter() {
-    internal var inflter: LayoutInflater
-
-    init {
-        inflter = LayoutInflater.from(context)
-    }
+    private var inflter: LayoutInflater = LayoutInflater.from(context)
 
     override fun getCount(): Int {
         return 13
@@ -30,11 +26,11 @@ class SpinnerAdapter(internal var context: Context, internal var colorShapeData:
 
     override fun getView(i: Int, view: View?, viewGroup: ViewGroup): View {
 
-        val view = inflter.inflate(R.layout.color_spinner,null)
-        val spinnerShape = view.findViewById<View>(R.id.spinnershape)
-        val spinnerText = view.findViewById<TextView>(R.id.spinnertext)
+        val spinnerView = inflter.inflate(R.layout.color_spinner,null)
+        val spinnerShape = spinnerView.findViewById<View>(R.id.colorSpinnerShape)
+        val spinnerText = spinnerView.findViewById<TextView>(R.id.colorSpinnerText)
         spinnerShape!!.setBackgroundColor(Color.parseColor(colorShapeData[i]))
         spinnerText!!.text = colorTextData[i]
-        return view
+        return spinnerView
     }
 }

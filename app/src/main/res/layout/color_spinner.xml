@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <View
-        android:id="@+id/spinnershape"
+        android:id="@+id/colorSpinnerShape"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="10dp"
@@ -19,16 +19,16 @@
         android:contentDescription="@string/app_name" />
 
     <TextView
-        android:id="@+id/spinnertext"
+        android:id="@+id/colorSpinnerText"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="15dp"
         android:textSize="16sp"
         android:textColor="@color/black"
-        app:layout_constraintTop_toTopOf="@id/spinnershape"
-        app:layout_constraintBottom_toBottomOf="@id/spinnershape"
-        app:layout_constraintStart_toEndOf="@id/spinnershape"
+        app:layout_constraintTop_toTopOf="@id/colorSpinnerShape"
+        app:layout_constraintBottom_toBottomOf="@id/colorSpinnerShape"
+        app:layout_constraintStart_toEndOf="@id/colorSpinnerShape"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="빨간색"/>
 

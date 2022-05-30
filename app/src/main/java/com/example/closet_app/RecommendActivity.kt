@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.RadioGroup
+import android.widget.TextView
 import android.widget.Toast
 
 class RecommendActivity : AppCompatActivity() {
@@ -45,5 +46,10 @@ class RecommendActivity : AppCompatActivity() {
             val myIntent = Intent(this, MainActivity::class.java)
             startActivity(myIntent)
         }
+
+        val colorOption = findViewById<TextView>(R.id.colorOption)
+        val styleOption = findViewById<TextView>(R.id.styleOption)
+        colorOption.text = intent.getStringExtra("color")
+        styleOption.text = intent.getStringExtra("style")
     }
 }

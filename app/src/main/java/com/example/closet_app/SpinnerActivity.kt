@@ -1,10 +1,9 @@
 package com.example.closet_app
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
 class SpinnerActivity : AppCompatActivity(){
@@ -30,7 +29,7 @@ class SpinnerActivity : AppCompatActivity(){
 
         var styleSpinner = findViewById<Spinner>(R.id.styleSpinner)
         var styleData = resources.getStringArray(R.array.styleData)
-        var styleAdapter = ArrayAdapter<String>(this, R.layout.style_spinner, R.id.spinnerstyletext, styleData)
+        var styleAdapter = ArrayAdapter<String>(this, R.layout.style_spinner, R.id.styleSpinnerText, styleData)
         styleSpinner.adapter = styleAdapter
         styleSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -39,6 +38,15 @@ class SpinnerActivity : AppCompatActivity(){
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
 
+        }
+
+        val optionSaveBtn = findViewById<Button>(R.id.optionSaveBtn)
+        optionSaveBtn.setOnClickListener {
+            val myIntent = Intent(this, RecommendActivity::class.java)
+            val colorSpinnerText = colorSpinner.selectedView.findViewById<TextView>(R.id.colorSpinnerText)
+            myIntent.putExtra("color", colorSpinnerText.text.toString())
+            myIntent.putExtra("style", styleSpinner.selectedItem.toString())
+            startActivity(myIntent)
         }
     }
 }

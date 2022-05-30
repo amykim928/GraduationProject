@@ -21,13 +21,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textcolor"
+        android:id="@+id/colorTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:text="Color:"
         android:textSize="20dp"
-        app:layout_constraintLeft_toLeftOf="@id/recommendBtn"
+        app:layout_constraintLeft_toLeftOf="@id/optionSaveBtn"
         app:layout_constraintTop_toBottomOf="@id/header" />
 
     <Spinner
@@ -37,19 +37,19 @@
         android:layout_height="wrap_content"
         android:padding="3dp"
         android:popupBackground="#e7e6e6"
-        app:layout_constraintLeft_toLeftOf="@id/styleSpinner"
-        app:layout_constraintTop_toTopOf="@id/textcolor"
-        app:layout_constraintBottom_toBottomOf="@id/textcolor"/>
+        app:layout_constraintRight_toRightOf="@id/optionSaveBtn"
+        app:layout_constraintTop_toTopOf="@id/colorTitle"
+        app:layout_constraintBottom_toBottomOf="@id/colorTitle"/>
 
     <TextView
-        android:id="@+id/textstyle"
+        android:id="@+id/styleTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
         android:text="Style:"
         android:textSize="20dp"
-        app:layout_constraintLeft_toLeftOf="@id/recommendBtn"
-        app:layout_constraintTop_toBottomOf="@id/textcolor" />
+        app:layout_constraintLeft_toLeftOf="@id/optionSaveBtn"
+        app:layout_constraintTop_toBottomOf="@id/colorTitle" />
 
     <Spinner
         android:id="@+id/styleSpinner"
@@ -57,12 +57,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:popupBackground="#e7e6e6"
-        app:layout_constraintRight_toRightOf="@id/recommendBtn"
-        app:layout_constraintTop_toTopOf="@id/textstyle"
-        app:layout_constraintBottom_toBottomOf="@id/textstyle"/>
+        app:layout_constraintRight_toRightOf="@id/optionSaveBtn"
+        app:layout_constraintTop_toTopOf="@id/styleTitle"
+        app:layout_constraintBottom_toBottomOf="@id/styleTitle"/>
 
     <Button
-        android:id="@+id/recommendBtn"
+        android:id="@+id/optionSaveBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="500dp"

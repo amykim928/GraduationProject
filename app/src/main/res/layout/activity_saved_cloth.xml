@@ -7,22 +7,47 @@
     tools:context=".SavedClothActivity">
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/totalPhotos"
+        android:layout_width="163dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="73dp"
+        app:layout_constraintStart_toStartOf="@+id/recyclerView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="33dp"
-        android:text="saved Clothes"
-        app:layout_constraintBottom_toTopOf="@+id/gohome"
-        app:layout_constraintEnd_toEndOf="@+id/gohome" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/totalPhotos"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/gohome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="145dp"
-        android:layout_marginBottom="276dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginStart="13dp"
+        android:text="Go Home"
+        app:layout_constraintBottom_toTopOf="@+id/totalPhotos"
+        app:layout_constraintStart_toEndOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="4dp"
+        android:text="저장된 옷"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/totalPhotos"
+        app:layout_constraintStart_toStartOf="@+id/totalPhotos" />
 </androidx.constraintlayout.widget.ConstraintLayout>

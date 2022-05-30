@@ -73,5 +73,21 @@
         app:layout_constraintBottom_toTopOf="@+id/totalPhotos"
         app:layout_constraintStart_toStartOf="@+id/totalPhotos" />
 
+    <Button
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/round_rectangle"
+        android:paddingLeft="21dp"
+        android:paddingTop="8dp"
+        android:paddingRight="21dp"
+        android:paddingBottom="8dp"
+        android:text="의상 결과"
+        android:textSize="16dp"
+        app:layout_constraintLeft_toLeftOf="@id/pick"
+        app:layout_constraintRight_toRightOf="@id/pick"
+        app:layout_constraintTop_toBottomOf="@id/pick" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

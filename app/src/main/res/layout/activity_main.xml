@@ -37,7 +37,7 @@
         android:id="@+id/temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="임시"
+        android:text="옵션"
         tools:layout_editor_absoluteX="158dp"
         tools:layout_editor_absoluteY="463dp" />
 

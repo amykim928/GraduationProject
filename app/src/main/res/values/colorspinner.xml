@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="color">
-        <item>색상</item>
+    <string-array name="colorShapeData">
+        <item>#000000</item>
+        <item>#ffffff</item>
+        <item>#808080</item>
+        <item>#ff0000</item>
+        <item>#ff3659</item>
+        <item>#f39800</item>
+        <item>#ac8e60</item>
+        <item>#964b00</item>
+        <item>#ffd400</item>
+        <item>#008000</item>
+        <item>#8f784b</item>
+        <item>#c0c0c0</item>
+        <item>#fbceb1</item>
+    </string-array>
+    <string-array name="colorTextData">
         <item>블랙</item>
         <item>화이트</item>
         <item>그레이</item>
@@ -15,6 +29,5 @@
         <item>카키</item>
         <item>실버</item>
         <item>에프리콧</item>
-        <item>레인보우</item>
     </string-array>
 </resources>

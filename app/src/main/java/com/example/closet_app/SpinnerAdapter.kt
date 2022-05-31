@@ -1,4 +1,4 @@
-package com.example.closet_app.adapter
+package com.example.closet_app
 
 import android.content.Context
 import android.graphics.Color

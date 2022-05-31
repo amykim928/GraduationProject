@@ -1,4 +1,4 @@
-package com.example.closet_app.adapter
+package com.example.closet_app
 
 import android.graphics.Bitmap
 import android.util.Log
@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.closet_app.R
 
 
 class RecyclerAdapter(private val bitArrayList: ArrayList<Bitmap>) :

@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.View
@@ -39,7 +38,7 @@ class RecommendActivity : AppCompatActivity() {
         val saveSatisfaction: Button = findViewById<View>(R.id.saveSatisfaction) as Button
         val saveResult: Button = findViewById<View>(R.id.saveResult) as Button
         val retry: Button = findViewById<View>(R.id.retry) as Button
-        val goCloset: Button = findViewById<View>(R.id.goCloset) as Button
+        val goCloset: Button = findViewById<View>(R.id.getCloth) as Button
 
         saveSatisfaction.setOnClickListener{
             Toast.makeText(this, "만족도를 저장했습니다!", Toast.LENGTH_SHORT).show()
@@ -70,6 +69,14 @@ class RecommendActivity : AppCompatActivity() {
         val styleOption = findViewById<TextView>(R.id.styleOption)
         colorOption.text = intent.getStringExtra("color")
         styleOption.text = intent.getStringExtra("style")
+
+
+        //해야할 것->내부 저장소에서 의상 불러오기
+        //의상을 불러와  base64로 바꾸고, json으로 파싱해서 서버로 보내고
+        //서버(모델)에서 값을 받아옴
+        //
+        //mCallTodoList = mRetrofitAPI.postPredict() // RetrofitAPI에서 Json객체 요청을 반환하는 메서드를 불러옵니다.
+        mCallTodoList.enqueue(mRetrofitCallback) // 콜백, 즉 응답들을 큐에 넣어 대기시켜놓습니다. 응답이 생기면 뱉어내는거죠.
     }
 
     private fun setRetrofit(){

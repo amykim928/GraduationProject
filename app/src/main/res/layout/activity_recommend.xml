@@ -154,11 +154,11 @@
                         android:text="다시하기" />
 
                     <Button
-                        android:id="@+id/goCloset"
+                        android:id="@+id/getCloth"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#A476F6"
-                        android:text="옷장으로" />
+                        android:text="getCloth" />
                 </LinearLayout>
 
             </LinearLayout>

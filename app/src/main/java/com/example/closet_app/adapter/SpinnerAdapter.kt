@@ -1,4 +1,4 @@
-package com.example.closet_app
+package com.example.closet_app.adapter
 
 import android.content.Context
 import android.graphics.Color
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.example.closet_app.R
 
 class SpinnerAdapter(internal var context: Context, private var colorShapeData: Array<String>, private var colorTextData: Array<String>) :
     BaseAdapter() {

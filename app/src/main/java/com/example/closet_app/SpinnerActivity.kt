@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import com.example.closet_app.adapter.SpinnerAdapter
 
 class SpinnerActivity : AppCompatActivity(){
 

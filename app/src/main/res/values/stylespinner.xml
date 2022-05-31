@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="styleData">
+        <item>트래디셔널</item>
+        <item>매니시</item>
+        <item>페미닌</item>
+        <item>에스닉</item>
+        <item>컨템포러리</item>
+        <item>내추럴</item>
+        <item>젠더플루이드</item>
+        <item>스포티</item>
+        <item>서브컬쳐</item>
+        <item>캐주얼</item>
+    </string-array>
+</resources>

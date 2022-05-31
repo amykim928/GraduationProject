@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         val savedCloth: Button = binding.savedCloth
 
         recommend.setOnClickListener {
-            val myIntent = Intent(this, SpinnerActivity::class.java)
+            val myIntent = Intent(this, RecommendActivity::class.java)
             startActivity(myIntent)
         }
 
@@ -42,8 +42,13 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        //추천한 의상 불러오기
         savedCloth.setOnClickListener {
             val myIntent = Intent(this, SavedClothActivity::class.java)
+            startActivity(myIntent)
+        }
+        binding.option.setOnClickListener {
+            val myIntent = Intent(this, SpinnerActivity::class.java)
             startActivity(myIntent)
         }
 

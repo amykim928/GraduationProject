@@ -17,6 +17,15 @@
         android:theme="@style/Theme.Closet_app"
         tools:targetApi="31">
         <activity
+            android:name=".SpinnerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClosetResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClosetResultDialogActivity"
+            android:exported="false" />
+        <activity
             android:name=".DetectActivity"
             android:exported="false" />
         <activity

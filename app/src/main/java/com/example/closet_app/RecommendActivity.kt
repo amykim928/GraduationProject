@@ -8,30 +8,32 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.RadioGroup
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.example.closet_app.data.API
 import com.example.closet_app.data.DataModel
 import com.google.gson.Gson
-import com.google.gson.JsonObject
+import com.google.gson.GsonBuilder
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 class RecommendActivity : AppCompatActivity() {
-    lateinit var mRetrofit :Retrofit // 사용할 레트로핏 객체입니다.
+    lateinit var mRetrofit: Retrofit // 사용할 레트로핏 객체입니다.
     lateinit var mRetrofitAPI: API.RetrofitAPI // 레트로핏 api객체입니다.
-    lateinit var mCallTodoList : retrofit2.Call<JsonObject> // Json형식의 데이터를 요청하는 객체입니다.
+    lateinit var mCallImgList: Call<DataModel> // Json형식의 데이터를 요청하는 객체입니다.
+
+    //detectActivity에서 ArrayList<Uri>를 건네주는 식으로 바꾸려고 하네요.
+    val bit = ArrayList<Bitmap>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recommend)
-
+        setRetrofit()
         val gohome: Button = findViewById<View>(R.id.gohome) as Button
 
         val gSatisfaction: RadioGroup = findViewById<View>(R.id.gSatisfaction) as RadioGroup
@@ -40,7 +42,7 @@ class RecommendActivity : AppCompatActivity() {
         val retry: Button = findViewById<View>(R.id.retry) as Button
         val goCloset: Button = findViewById<View>(R.id.getCloth) as Button
 
-        saveSatisfaction.setOnClickListener{
+        saveSatisfaction.setOnClickListener {
             Toast.makeText(this, "만족도를 저장했습니다!", Toast.LENGTH_SHORT).show()
             gSatisfaction.clearCheck()
         }
@@ -54,10 +56,20 @@ class RecommendActivity : AppCompatActivity() {
             //val myIntent = Intent(this, ClosetActivity::class.java)
             //startActivity(myIntent)
         }
-
+        // 이걸로 내부 저장소에 있는 옷을 가져와서 api에 보내보죠.
         goCloset.setOnClickListener {
-            val myIntent = Intent(this, ClosetActivity::class.java)
-            startActivity(myIntent)
+            val file = File(filesDir.toString())
+            val files = file.listFiles()
+            for (tempFile in files!!) {
+                val path = filesDir.toString() + "/" + tempFile.name
+                bit.add(BitmapFactory.decodeFile(path))
+            }
+            val bitString = bitmapToString(bit[0])
+            val jsonObject = JSONObject()
+            jsonObject.put("img", bitString)
+            mCallImgList =
+                mRetrofitAPI.postPredict(jsonObject)  // RetrofitAPI에서 Json객체 요청을 반환하는 메서드를 불러옵니다.
+            mCallImgList.enqueue(mRetrofitCallback)
         }
 
         gohome.setOnClickListener {
@@ -75,16 +87,19 @@ class RecommendActivity : AppCompatActivity() {
         //의상을 불러와  base64로 바꾸고, json으로 파싱해서 서버로 보내고
         //서버(모델)에서 값을 받아옴
         //
-        //mCallTodoList = mRetrofitAPI.postPredict() // RetrofitAPI에서 Json객체 요청을 반환하는 메서드를 불러옵니다.
-        mCallTodoList.enqueue(mRetrofitCallback) // 콜백, 즉 응답들을 큐에 넣어 대기시켜놓습니다. 응답이 생기면 뱉어내는거죠.
+        //mCallTodoList = mRetrofitAPI.postPredict()
+        //mCallTodoList.enqueue(mRetrofitCallback) // 콜백, 즉 응답들을 큐에 넣어 대기시켜놓습니다. 응답이 생기면 뱉어내는거죠.
     }
 
-    private fun setRetrofit(){
+    private fun setRetrofit() {
         //레트로핏으로 가져올 url설정하고 세팅
+        val gson : Gson = GsonBuilder()
+            .setLenient()
+            .create()
         mRetrofit = Retrofit
             .Builder()
             .baseUrl(getString(R.string.baseUrl))
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
         //인터페이스로 만든 레트로핏 api요청 받는 것 변수로 등록
@@ -92,26 +107,34 @@ class RecommendActivity : AppCompatActivity() {
     }
 
     //http요청을 보냈고 이건 응답을 받을 콜벡메서드
-    private val mRetrofitCallback  = (object : retrofit2.Callback<JsonObject>{//Json객체를 응답받는 콜백 객체
-
-        //응답을 가져오는데 실패
-        override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-            t.printStackTrace()
-            Log.d("TAG", "에러입니다. => ${t.message.toString()}")
-
-        }
-        //응답을 가져오는데 성공 -> 성공한 반응 처리
-        override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+    private val mRetrofitCallback = (object : retrofit2.Callback<DataModel> {
+        override fun onResponse(call: Call<DataModel>, response: Response<DataModel>) {
             val result = response.body()
-            Log.d("TAG", "결과는 => $result")
-
-            var mGson = Gson()
-            val dataParsed1 = mGson.fromJson(result, DataModel.img0::class.java)
-            val dataParsed2 = mGson.fromJson(result, DataModel.img1::class.java)
-            val dataParsed3 = mGson.fromJson(result, DataModel.img2::class.java)
-
+//            val getImg = stringToBitmap(result!!.img0)
+//            val img = findViewById<ImageView>(R.id.recommendImg)
+//            img.setImageBitmap(getImg)
         }
-    })
+
+        override fun onFailure(call: Call<DataModel>, t: Throwable) {
+            t.printStackTrace()
+            Log.i("don't try", t.message.toString())
+        }
+
+    })//Json객체를 응답받는 콜백 객체
+
+
+//        //응답을 가져오는데 성공 -> 성공한 반응 처리
+//        override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+//            val result = response.body()
+//            Log.d("TAG", "결과는 => $result")
+//
+//            var mGson = Gson()
+//            val dataParsed1 = mGson.fromJson(result, DataModel.img0::class.java)
+//            val dataParsed2 = mGson.fromJson(result, DataModel.img1::class.java)
+//            val dataParsed3 = mGson.fromJson(result, DataModel.img2::class.java)
+//
+//        }
+//    })
 
     private fun bitmapToString(bitmap: Bitmap): String {
 
@@ -130,6 +153,7 @@ class RecommendActivity : AppCompatActivity() {
 
         return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
     }
+}
 
 
 
@@ -140,4 +164,3 @@ class RecommendActivity : AppCompatActivity() {
 //    val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, "여기에 이미지 uri")
 //
 //    bitmapToString(bitmap)
-}

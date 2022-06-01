@@ -42,7 +42,7 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/imageView"
+                        android:id="@+id/recommendImg"
                         android:layout_width="393dp"
                         android:layout_height="295dp"
                         app:srcCompat="@drawable/outfit" />

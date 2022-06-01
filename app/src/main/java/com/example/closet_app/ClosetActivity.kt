@@ -58,6 +58,7 @@ class ClosetActivity : AppCompatActivity() {
         recyclerView=binding.recyclerView
 
         val pick=binding.pick
+
         adapter = RecyclerAdapter(bit)
 
         recyclerView.layoutManager=LinearLayoutManager(this@ClosetActivity,LinearLayoutManager.HORIZONTAL, false)

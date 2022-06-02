@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.*
 import com.example.closet_app.data.API
 import com.example.closet_app.data.DataModel
+import com.example.closet_app.data.ImgDataModel
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.json.JSONObject
@@ -20,12 +21,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 
 class RecommendActivity : AppCompatActivity() {
     lateinit var mRetrofit: Retrofit // 사용할 레트로핏 객체입니다.
     lateinit var mRetrofitAPI: API.RetrofitAPI // 레트로핏 api객체입니다.
-    lateinit var mCallImgList: Call<DataModel> // Json형식의 데이터를 요청하는 객체입니다.
-
+    lateinit var mCallImgList: Call<ImgDataModel> // Json형식의 데이터를 요청하는 객체입니다.
+    lateinit var imageView: ImageView
     //detectActivity에서 ArrayList<Uri>를 건네주는 식으로 바꾸려고 하네요.
     val bit = ArrayList<Bitmap>()
 
@@ -35,12 +37,12 @@ class RecommendActivity : AppCompatActivity() {
         setContentView(R.layout.activity_recommend)
         setRetrofit()
         val gohome: Button = findViewById<View>(R.id.gohome) as Button
-
+        imageView=findViewById(R.id.recommendImg)
         val gSatisfaction: RadioGroup = findViewById<View>(R.id.gSatisfaction) as RadioGroup
         val saveSatisfaction: Button = findViewById<View>(R.id.saveSatisfaction) as Button
         val saveResult: Button = findViewById<View>(R.id.saveResult) as Button
         val retry: Button = findViewById<View>(R.id.retry) as Button
-        val goCloset: Button = findViewById<View>(R.id.getCloth) as Button
+        val getCloset: Button = findViewById<View>(R.id.getCloth) as Button
 
         saveSatisfaction.setOnClickListener {
             Toast.makeText(this, "만족도를 저장했습니다!", Toast.LENGTH_SHORT).show()
@@ -50,6 +52,7 @@ class RecommendActivity : AppCompatActivity() {
         saveResult.setOnClickListener {
             //val myIntent = Intent(this, ClosetActivity::class.java)
             Toast.makeText(this, "결과를 저장했습니다!", Toast.LENGTH_SHORT).show()
+
         }
 
         retry.setOnClickListener {
@@ -57,19 +60,22 @@ class RecommendActivity : AppCompatActivity() {
             //startActivity(myIntent)
         }
         // 이걸로 내부 저장소에 있는 옷을 가져와서 api에 보내보죠.
-        goCloset.setOnClickListener {
+        getCloset.setOnClickListener {
             val file = File(filesDir.toString())
             val files = file.listFiles()
+        //    Log.i("first","maybehere")
             for (tempFile in files!!) {
                 val path = filesDir.toString() + "/" + tempFile.name
                 bit.add(BitmapFactory.decodeFile(path))
             }
+
+        //    Log.i("second","maybehere")
             val bitString = bitmapToString(bit[0])
-            val jsonObject = JSONObject()
-            jsonObject.put("img", bitString)
-            mCallImgList =
-                mRetrofitAPI.postPredict(jsonObject)  // RetrofitAPI에서 Json객체 요청을 반환하는 메서드를 불러옵니다.
+         //   Log.i("third","maybehere")
+            mCallImgList = mRetrofitAPI.postImgPredict(bitString)  // RetrofitAPI에서 Json객체 요청을 반환하는 메서드를 불러옵니다.
+        //    Log.i("fourth","maybehere")
             mCallImgList.enqueue(mRetrofitCallback)
+            //imageView.setImageBitmap(bit[5])
         }
 
         gohome.setOnClickListener {
@@ -87,8 +93,8 @@ class RecommendActivity : AppCompatActivity() {
         //의상을 불러와  base64로 바꾸고, json으로 파싱해서 서버로 보내고
         //서버(모델)에서 값을 받아옴
         //
-        //mCallTodoList = mRetrofitAPI.postPredict()
-        //mCallTodoList.enqueue(mRetrofitCallback) // 콜백, 즉 응답들을 큐에 넣어 대기시켜놓습니다. 응답이 생기면 뱉어내는거죠.
+//        mCallTodoList = mRetrofitAPI.postPredict()
+//        mCallTodoList.enqueue(mRetrofitCallback) // 콜백, 즉 응답들을 큐에 넣어 대기시켜놓습니다. 응답이 생기면 뱉어내는거죠.
     }
 
     private fun setRetrofit() {
@@ -107,35 +113,56 @@ class RecommendActivity : AppCompatActivity() {
     }
 
     //http요청을 보냈고 이건 응답을 받을 콜벡메서드
-    private val mRetrofitCallback = (object : retrofit2.Callback<DataModel> {
-        override fun onResponse(call: Call<DataModel>, response: Response<DataModel>) {
+    private val mRetrofitCallback = (object : retrofit2.Callback<ImgDataModel> {
+        override fun onResponse(call: Call<ImgDataModel>, response: Response<ImgDataModel>) {
             val result = response.body()
-//            val getImg = stringToBitmap(result!!.img0)
-//            val img = findViewById<ImageView>(R.id.recommendImg)
-//            img.setImageBitmap(getImg)
+            val img0=stringToBitmap(result!!.img0)
+            val img1=stringToBitmap(result.img1)
+            val img2=stringToBitmap(result.img2)
+            val img3=stringToBitmap(result.img3)
+            val img4=stringToBitmap(result.img4)
+            val img5=stringToBitmap(result.img5)
+            val img6=stringToBitmap(result.img6)
+            val img7=stringToBitmap(result.img7)
+            bit.add(img0)
+            bit.add(img1)
+            bit.add(img2)
+            bit.add(img3)
+            bit.add(img4)
+            bit.add(img5)
+            bit.add(img6)
+            bit.add(img7)
+            imageView.setImageBitmap(img1)
+            saveBitmap(img1,1.toString())
+            Log.i("fifth","maybehere")
+            Log.i("bits?:", bit[1].height.toString())
+           // Toast.makeText(this@RecommendActivity,"추천 완료",Toast.LENGTH_SHORT).show()
+
+
         }
 
-        override fun onFailure(call: Call<DataModel>, t: Throwable) {
+        override fun onFailure(call: Call<ImgDataModel>, t: Throwable) {
             t.printStackTrace()
-            Log.i("don't try", t.message.toString())
+            Log.i("failureT",t.message.toString())
         }
+
 
     })//Json객체를 응답받는 콜백 객체
 
+    private fun saveBitmap(bitmap: Bitmap, name: String) {
 
-//        //응답을 가져오는데 성공 -> 성공한 반응 처리
-//        override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-//            val result = response.body()
-//            Log.d("TAG", "결과는 => $result")
-//
-//            var mGson = Gson()
-//            val dataParsed1 = mGson.fromJson(result, DataModel.img0::class.java)
-//            val dataParsed2 = mGson.fromJson(result, DataModel.img1::class.java)
-//            val dataParsed3 = mGson.fromJson(result, DataModel.img2::class.java)
-//
-//        }
-//    })
+        //내부저장소 캐시 경로를 받아옵니다.
+        //지금은 그냥 filesdir로 했지만,
+        //나중에는 dir에 디렉토리를 만들어서 /files/cropped/1.jpg 이런식으로 저장하는게 좋겟죠.
 
+        val storage=filesDir
+        val filename= "saved$name.jpg"
+
+        val tmpFile=File(storage,filename)
+        tmpFile.createNewFile()
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100, FileOutputStream(tmpFile))
+
+    }
     private fun bitmapToString(bitmap: Bitmap): String {
 
         val byteArrayOutputStream = ByteArrayOutputStream()

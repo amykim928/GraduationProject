@@ -34,7 +34,7 @@ class DetectActivity : AppCompatActivity() {
     //의상 검출을 위한 변수
     lateinit var detector: YoloClassfier
 
-    val MINIMUM_CONFIDENCE_TF_OD_API=0.5f
+    val MINIMUM_CONFIDENCE_TF_OD_API=0.4f
 
 
     //의상 검출 결과 변수 저장
@@ -226,7 +226,7 @@ class DetectActivity : AppCompatActivity() {
                 //여기있는 location이 옷이 있는 좌표입니다. 그것을 활용해서 옷의 위치를 추출해주시면 될 것 같습니다
                 Log.i("results",location.toShortString()+result.title)
               //  Log.i("xy : ", "${location.left}/${location.top}/${location.width()}/${location.height()}")
-              //  canvas.drawRect(location, paint)
+               // canvas.drawRect(location, paint)
             }
         }
         return results

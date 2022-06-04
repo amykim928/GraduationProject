@@ -237,12 +237,15 @@ class DetectActivity : AppCompatActivity() {
         //내부저장소 캐시 경로를 받아옵니다.
         //지금은 그냥 filesdir로 했지만,
         //나중에는 dir에 디렉토리를 만들어서 /files/cropped/1.jpg 이런식으로 저장하는게 좋겟죠.
+        val dirs = File("$filesDir/save")
+        if (!dirs.exists()){
+            dirs.mkdirs()
+        }
+        if(dirs.isDirectory) {	Log.i("dir", "디렉토리입니다..: $filesDir/save")}
 
-        val storage=filesDir
-        val filename= "123$name.jpg"
-        val tmpFile=File(storage,filename)
-        tmpFile.createNewFile()
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,FileOutputStream(tmpFile))
+        val file = File("$filesDir/save/$name.jpg")
+        file.createNewFile()
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,FileOutputStream(file))
 
     }
 }

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -40,13 +41,23 @@ class ClosetActivity : AppCompatActivity() {
     }
 
     private fun setBits() {
-        val file = File(filesDir.toString())
-        val files = file.listFiles()
+        val dirs = File("$filesDir/save")
+        val fileDirs=dirs.listFiles()
 
-        for (tempFile in files!!) {
-            val path=filesDir.toString()+"/"+tempFile.name
-            bit.add(BitmapFactory.decodeFile(path))
+        if(fileDirs != null){
+            if(fileDirs.isEmpty()){
+                Log.i("warning","cannot find dir or no files")
+            }else{
+                for(tmpFile in fileDirs){
+                    Log.i("files", tmpFile.name)
+                    val path="$dirs/${tmpFile.name}"
+                    bit.add(BitmapFactory.decodeFile(path))
+                }
+            }
+        }else{
+            Log.i("error","filedirs null")
         }
+
 
     }
 

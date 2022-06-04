@@ -1,4 +1,4 @@
-package com.example.closet_app
+package com.example.closet_app.dialog
 
 
 import android.content.Intent
@@ -6,6 +6,9 @@ import android.app.Dialog
 import android.content.Context
 import android.view.WindowManager
 import android.widget.Button
+import com.example.closet_app.ClosetActivity
+import com.example.closet_app.R
+import com.example.closet_app.RecommendActivity
 
 class ClosetResultDialogActivity(context: Context){
     private val dialog = Dialog(context)

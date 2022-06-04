@@ -3,18 +3,19 @@ package com.example.closet_app
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.core.graphics.drawable.toBitmap
 import com.example.closet_app.data.API
-import com.example.closet_app.data.DataModel
 import com.example.closet_app.data.ImgDataModel
+import com.example.closet_app.dialog.recommendDialog
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -38,6 +39,7 @@ class RecommendActivity : AppCompatActivity() {
         setRetrofit()
         val gohome: Button = findViewById<View>(R.id.gohome) as Button
         imageView=findViewById(R.id.recommendImg)
+        val fromCloset=findViewById<ImageView>(R.id.fromClosetImg)
         val gSatisfaction: RadioGroup = findViewById<View>(R.id.gSatisfaction) as RadioGroup
         val saveSatisfaction: Button = findViewById<View>(R.id.saveSatisfaction) as Button
         val saveResult: Button = findViewById<View>(R.id.saveResult) as Button
@@ -56,21 +58,22 @@ class RecommendActivity : AppCompatActivity() {
         }
 
         retry.setOnClickListener {
-            //val myIntent = Intent(this, ClosetActivity::class.java)
-            //startActivity(myIntent)
+            val dialog = recommendDialog(this)
+            Log.i("솔직히","여기죠?")
+            dialog.showDialog()
+            dialog.setOnClickListener(object : recommendDialog.OnDialogClickListener {
+                override fun onClicked(image: Drawable) {
+                    fromCloset.setImageDrawable(image)
+                }
+            })
         }
+
+
+
         // 이걸로 내부 저장소에 있는 옷을 가져와서 api에 보내보죠.
         getCloset.setOnClickListener {
-            val file = File(filesDir.toString())
-            val files = file.listFiles()
-        //    Log.i("first","maybehere")
-            for (tempFile in files!!) {
-                val path = filesDir.toString() + "/" + tempFile.name
-                bit.add(BitmapFactory.decodeFile(path))
-            }
-
         //    Log.i("second","maybehere")
-            val bitString = bitmapToString(bit[0])
+            val bitString = bitmapToString(fromCloset.drawable.toBitmap())
          //   Log.i("third","maybehere")
             mCallImgList = mRetrofitAPI.postImgPredict(bitString)  // RetrofitAPI에서 Json객체 요청을 반환하는 메서드를 불러옵니다.
         //    Log.i("fourth","maybehere")

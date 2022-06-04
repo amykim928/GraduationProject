@@ -57,7 +57,7 @@
                             android:layout_width="0dp"
                             android:layout_height="295dp"
                             android:layout_weight="1"
-                            app:srcCompat="@drawable/outfit" />
+                            app:srcCompat="@drawable/clothes_hanger" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -151,25 +151,37 @@
                     android:layout_gravity="center">
 
                     <Button
-                        android:id="@+id/saveResult"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/gohome"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:backgroundTint="#A476F6"
+                        android:gravity="center"
+                        android:text="Home" />
+
+                    <Button
+                        android:id="@+id/saveResult"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:backgroundTint="#A476F6"
                         android:text="결과 저장" />
 
                     <Button
                         android:id="@+id/retry"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
+                        android:layout_weight="1"
                         android:backgroundTint="#A476F6"
                         android:text="다시하기" />
 
                     <Button
                         android:id="@+id/getCloth"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:backgroundTint="#A476F6"
                         android:text="getCloth" />
                 </LinearLayout>
@@ -177,19 +189,6 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/gohome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:gravity="center"
-        android:text="Go Home"
-        android:backgroundTint="#A476F6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/colorOption"

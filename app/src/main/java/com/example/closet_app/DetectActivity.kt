@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +16,7 @@ import com.example.graduateproject.classfiers.YoloClassfier
 import com.example.graduateproject.classfiers.YoloInterfaceClassfier
 import com.example.graduateproject.env.ImageUtils
 import com.example.graduateproject.env.Utils
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 
 
 class DetectActivity : AppCompatActivity() {
@@ -157,6 +154,7 @@ class DetectActivity : AppCompatActivity() {
 
         cropBtn.setOnClickListener {
             val cropList= arrayListOf<Bitmap>()
+            val subResult = arrayListOf<YoloInterfaceClassfier.Recognition>()
 
             //이미지를 검출한 것을 crop(잘라내서) 의상으로 저장할 것임
             for (result in resultList){
@@ -165,6 +163,7 @@ class DetectActivity : AppCompatActivity() {
                 if (location != null && result.confidence!! >= MINIMUM_CONFIDENCE_TF_OD_API) {
                     val cropBitmap=cropBitmaps(originBitmap,result.location!!)
                     cropList.add(cropBitmap)
+                    subResult.add(result)
                 }
 
             }
@@ -172,6 +171,10 @@ class DetectActivity : AppCompatActivity() {
 
             for((idx,crops) in cropList.withIndex()){
                 saveBitmap(crops,idx.toString())
+            }
+
+            for((idx,results) in subResult.withIndex()){
+                saveResult(results,idx.toString())
             }
 
 
@@ -247,5 +250,18 @@ class DetectActivity : AppCompatActivity() {
         file.createNewFile()
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,FileOutputStream(file))
 
+    }
+    private fun saveResult(results: YoloInterfaceClassfier.Recognition, name:String){
+        val file2=File("$filesDir/save/$name.txt")
+        val printWriter= FileWriter(file2)
+        val buffer= BufferedWriter(printWriter)
+        buffer.write(results.title)
+        buffer.close()
+
+        if(File("$filesDir/save/$name.txt").exists()){
+            Log.i("sucess","save result sucess")
+        }else{
+            Log.i("sucess","save result fail")
+        }
     }
 }

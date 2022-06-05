@@ -51,7 +51,10 @@ class ClosetActivity : AppCompatActivity() {
                 for(tmpFile in fileDirs){
                     Log.i("files", tmpFile.name)
                     val path="$dirs/${tmpFile.name}"
-                    bit.add(BitmapFactory.decodeFile(path))
+                    if(".jpg" in path){
+                        bit.add(BitmapFactory.decodeFile(path))
+                    }
+
                 }
             }
         }else{

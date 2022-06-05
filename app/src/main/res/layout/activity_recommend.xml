@@ -172,10 +172,9 @@
                         android:id="@+id/retry"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:backgroundTint="#A476F6"
-                        android:text="다시하기" />
+                        android:text="저장된 옷" />
 
                     <Button
                         android:id="@+id/getCloth"
@@ -183,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="#A476F6"
-                        android:text="getCloth" />
+                        android:text="추천 받기" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -22,7 +22,7 @@ class RecyclerAdapter(private val bitArrayList: ArrayList<Bitmap>) :
         holder.imageView.setImageBitmap(bitArrayList[position])
         holder.nameText.text="사진"
 
-        Log.d("position",bitArrayList[position].toString())
+//        Log.d("position",bitArrayList[position].toString())
     }
 
     override fun getItemCount(): Int {

@@ -10,8 +10,8 @@ import retrofit2.http.Query
 
 interface API {
     interface RetrofitAPI {
-        @POST("/predict2")//서버에 GET요청을 할 주소를 입력
-        fun postPredict(@Query("Json") Json: JSONObject) : Call<DataModel> //RecommendActivity에서 사용할 json파일 가져오는 메서드
+        @POST("/predict3")//서버에 GET요청을 할 주소를 입력
+        fun postPredict(@Body img:HashMap<String,ImageFeatures>) : Call<ImgLabelModel> //RecommendActivity에서 사용할 json파일 가져오는 메서드
 
         @POST("/predict2")
         fun postImgPredict(@Body img:String) :Call<ImgDataModel>

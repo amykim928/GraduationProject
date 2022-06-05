@@ -43,11 +43,11 @@ class recommendDialog (context: Context)
 
 
         img1.setOnClickListener{
-            onClickListener.onClicked(img1.drawable)
+            onClickListener.onClicked(img1.drawable,0)
             dialog.dismiss()
         }
         img2.setOnClickListener{
-            onClickListener.onClicked(img2.drawable)
+            onClickListener.onClicked(img2.drawable,1)
             dialog.dismiss()
         }
         img1.setImageBitmap(bit[0])
@@ -67,7 +67,7 @@ class recommendDialog (context: Context)
 
     interface OnDialogClickListener
     {
-        fun onClicked(image: Drawable)
+        fun onClicked(image: Drawable,int: Int)
     }
 
     private fun setBits() {
@@ -77,11 +77,16 @@ class recommendDialog (context: Context)
         if(fileDirs != null){
             if(fileDirs.isEmpty()){
                 Log.i("warning","cannot find dir or no files")
-            }else{
+            }
+            else{
                 for(tmpFile in fileDirs){
-                    Log.i("files", tmpFile.name)
                     val path="$dirs/${tmpFile.name}"
-                    bit.add(BitmapFactory.decodeFile(path))
+                    if(".jpg" in path){
+                        bit.add(BitmapFactory.decodeFile(path))
+                    }else{
+                        Log.i("텍스트입니다.", tmpFile.name)
+                    }
+
                 }
             }
         }else{

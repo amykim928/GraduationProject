@@ -58,7 +58,7 @@ class DetectActivity : AppCompatActivity() {
     private val TF_OD_API_IS_QUANTIZED = false
 
     //나중에 모델 더 좋게 학습하면 모델이름을 바꾸거나 업데이트하겠죠.
-    private val TF_OD_API_MODEL_FILE = "yolov4_1.tflite"
+    private val TF_OD_API_MODEL_FILE = "yolov4_2.tflite"
 
     private val TF_OD_API_LABELS_FILE = "file:///android_asset/obj.txt"
     //검출하는 부분은 여기다가 두었습니다.

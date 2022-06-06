@@ -155,7 +155,7 @@ class RecommendActivity : AppCompatActivity() {
             .baseUrl(getString(R.string.baseUrl))
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-
+//http://10.0.2.2:5000
         //인터페이스로 만든 레트로핏 api요청 받는 것 변수로 등록
         mRetrofitAPI = mRetrofit.create(API.RetrofitAPI::class.java)
     }
@@ -214,8 +214,17 @@ class RecommendActivity : AppCompatActivity() {
 
             scores.addAll(listOf(score0,score1,score2,score3,score4,score5,score6,score7))
             Log.i("check score",scores.toString())
+            if(scores.contains(2)){
+                val idx:Int=scores.indexOf(2)
+                imageView.setImageBitmap(bit[idx])
+            }
+            else if(scores.contains(0)){
+                val idx=scores.indexOf(0)
+                imageView.setImageBitmap(bit[idx])
+            }else{
+                imageView.setImageBitmap(bit[0])
+            }
 
-            imageView.setImageBitmap(img1)
             Log.i("check Label",label0)
         }
 

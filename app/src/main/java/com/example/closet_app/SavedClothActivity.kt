@@ -21,6 +21,7 @@ class SavedClothActivity : AppCompatActivity() {
     var uri = ArrayList<Uri>()
 
     var adapter: SavedClothRecyclerViewAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_saved_cloth)
@@ -36,5 +37,6 @@ class SavedClothActivity : AppCompatActivity() {
         adapter = SavedClothRecyclerViewAdapter(uri)
         recyclerView?.setLayoutManager(GridLayoutManager(this@SavedClothActivity, 4))
         recyclerView?.setAdapter(adapter)
+
     }
 }

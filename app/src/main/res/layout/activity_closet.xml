@@ -7,6 +7,16 @@
     tools:context=".ClosetActivity">
 
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="내 옷장"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:textSize="35sp"
+        tools:ignore="MissingConstraints" />
+
     <Button
         android:id="@+id/pick"
         android:layout_width="149dp"
@@ -15,6 +25,7 @@
         android:layout_marginEnd="39dp"
         android:layout_marginBottom="14dp"
         android:text="사진 추가"
+        android:backgroundTint="#A476F6"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.931"
@@ -54,7 +65,8 @@
         android:layout_marginTop="55dp"
         android:layout_marginEnd="68dp"
         android:layout_marginBottom="83dp"
-        android:text="Button"
+        android:text="Go Home"
+        android:backgroundTint="#A476F6"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/totalPhotos"

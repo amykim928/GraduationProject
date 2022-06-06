@@ -40,6 +40,8 @@ class ClosetActivity : AppCompatActivity() {
         adapter = RecyclerAdapter(uri)
         recyclerView?.setLayoutManager(GridLayoutManager(this@ClosetActivity, 4))
         recyclerView?.setAdapter(adapter)
+
+        //
         if (ContextCompat.checkSelfPermission(
                 this@ClosetActivity,
                 Manifest.permission.READ_EXTERNAL_STORAGE

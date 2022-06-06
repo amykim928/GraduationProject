@@ -42,6 +42,8 @@ class RecommendActivity : AppCompatActivity() {
     //detectActivity에서 ArrayList<Uri>를 건네주는 식으로 바꾸려고 하네요.
     val bit = ArrayList<Bitmap>()
     val labels=ArrayList<String>()
+    val scores=ArrayList<Int>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -161,6 +163,11 @@ class RecommendActivity : AppCompatActivity() {
     private val mRetrofitCallback2 = (object : retrofit2.Callback<ImgLabelModel> {
         override fun onResponse(call: Call<ImgLabelModel>, response: Response<ImgLabelModel>) {
             val result = response.body()
+            if(!bit.isEmpty()){
+                bit.clear()
+                scores.clear()
+                labels.clear()
+            }
             Log.i("need print result",result.toString())
             val img0=stringToBitmap(result!!.img0[0].toString())
             val img1=stringToBitmap(result.img1[0].toString())
@@ -195,6 +202,18 @@ class RecommendActivity : AppCompatActivity() {
             ImgMap[label5]?.let { labels.add(it) }
             ImgMap[label6]?.let { labels.add(it) }
             ImgMap[label7]?.let { labels.add(it) }
+
+            val score0=result.img0[2].toString().toInt()
+            val score1=result.img1[2].toString().toInt()
+            val score2=result.img2[2].toString().toInt()
+            val score3=result.img3[2].toString().toInt()
+            val score4=result.img4[2].toString().toInt()
+            val score5=result.img5[2].toString().toInt()
+            val score6=result.img6[2].toString().toInt()
+            val score7=result.img7[2].toString().toInt()
+
+            scores.addAll(listOf(score0,score1,score2,score3,score4,score5,score6,score7))
+            Log.i("check score",scores.toString())
 
             imageView.setImageBitmap(img1)
             Log.i("check Label",label0)

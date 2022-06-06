@@ -14,29 +14,70 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+//import com.example.closet_app.databinding.ActivityClosetBinding
+import com.example.closet_app.R.layout.activity_saved_cloth
 
 class SavedClothActivity : AppCompatActivity() {
-    var recyclerView: RecyclerView? = null
-    var textView: TextView? = null
-    var uri = ArrayList<Uri>()
-
-    var adapter: SavedClothRecyclerViewAdapter? = null
+//    private lateinit var binding: ActivityClosetBinding
+//    private lateinit var manager: RecyclerView.LayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_saved_cloth)
+        setContentView(activity_saved_cloth)
 
         val gohome: Button = findViewById<View>(R.id.gohome) as Button
         gohome.setOnClickListener {
             val myIntent = Intent(this, MainActivity::class.java)
             startActivity(myIntent)
         }
-
-        textView = findViewById(R.id.totalPhotos)
-        recyclerView = findViewById(R.id.recyclerView)
-        adapter = SavedClothRecyclerViewAdapter(uri)
-        recyclerView?.setLayoutManager(GridLayoutManager(this@SavedClothActivity, 4))
-        recyclerView?.setAdapter(adapter)
-
     }
 }
+
+
+//        binding = ActivityClosetBinding.inflate(layoutInflater)
+//        manager = GridLayoutManager(this, 3)
+//
+//        var data = listOf(
+//            ClosetData(
+//                getDrawable(R.drawable.blouse)!!,
+//                getDrawable(R.drawable.skirt)!!,
+//                "만족",
+//                "트레디셔널",
+//                "베이지"
+//            ),
+//            ClosetData(
+//                getDrawable(R.drawable.blouse)!!,
+//                getDrawable(R.drawable.skirt)!!,
+//                "만족",
+//                "트레디셔널",
+//                "검정"
+//            ),
+//            ClosetData(
+//                getDrawable(R.drawable.blouse)!!,
+//                getDrawable(R.drawable.skirt)!!,
+//                "만족",
+//                "페미닌",
+//                "핑크"
+//            ),
+//            ClosetData(
+//                getDrawable(R.drawable.blouse)!!,
+//                getDrawable(R.drawable.skirt)!!,
+//                "만족",
+//                "스트리트",
+//                "파랑"
+//            ),
+//            ClosetData(
+//                getDrawable(R.drawable.blouse)!!,
+//                getDrawable(R.drawable.skirt)!!,
+//                "만족",
+//                "톰보이",
+//                "빨강"
+//            ),
+//        )
+//
+//        binding.recyclerView.apply {
+//            adapter = SavedClothRecyclerViewAdapter(data)
+//            layoutManager = manager
+//        }
+//    }
+//}

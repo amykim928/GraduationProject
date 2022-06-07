@@ -130,10 +130,10 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:gravity="center"
                         android:layout_marginHorizontal="140dp"
                         android:backgroundTint="#A476F6"
-                        android:text="평가 저장" />
+                        android:gravity="center"
+                        android:text="만족도 저장" />
 
                 </LinearLayout>
 

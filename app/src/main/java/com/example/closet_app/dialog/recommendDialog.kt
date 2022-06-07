@@ -32,11 +32,11 @@ class recommendDialog (context: Context)
         dialog.setCancelable(true)
 
         setBits()
-        if(bit.size==0){
-            Log.i("낄낄","없다는데")
-        }else{
-            Log.i("있네",bit.size.toString())
-        }
+//        if(bit.size==0){
+//            Log.i("낄낄","없다는데")
+//        }else{
+//            Log.i("있네",bit.size.toString())
+//        }
         val img1=dialog.findViewById<ImageView>(R.id.img1)
         val img2=dialog.findViewById<ImageView>(R.id.img2)
         val img3=dialog.findViewById<ImageView>(R.id.img3)
@@ -50,8 +50,13 @@ class recommendDialog (context: Context)
             onClickListener.onClicked(img2.drawable,1)
             dialog.dismiss()
         }
+        img3.setOnClickListener{
+            onClickListener.onClicked(img3.drawable,1)
+            dialog.dismiss()
+        }
         img1.setImageBitmap(bit[0])
         img2.setImageBitmap(bit[1])
+        img3.setImageBitmap(bit[2])
 
         dialog.show()
 

@@ -14,37 +14,154 @@ import java.io.File
 class SavedClothActivity : AppCompatActivity() {
 
     lateinit var binding: ActivitySavedClothBinding
-
+    private val bits=ArrayList<Bitmap>()
+    val texts=ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivitySavedClothBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val gohome: Button = findViewById<View>(R.id.gohome) as Button
+        val goHome =binding.gohome
 
-        val file = File(filesDir.toString())
-        val files = file.listFiles()
-        //    Log.i("first","maybehere")
-        var bit:Bitmap?=null
 
-        for (tempFile in files!!) {
-            val path = filesDir.toString() + "/" + tempFile.name
-            if("saved" in tempFile.name){
-                Log.i("tags","saved")
-                bit=BitmapFactory.decodeFile(path)
+        setBits()
+        setTexts()
+
+        val numBit=bits.size/2
+        when (numBit) {
+            1 -> {
+                binding.img1.setImageBitmap(bits[0])
+                binding.img2.setImageBitmap(bits[1])
+            }
+            2 -> {
+                binding.img1.setImageBitmap(bits[0])
+                binding.img2.setImageBitmap(bits[1])
+                binding.img3.setImageBitmap(bits[2])
+                binding.img4.setImageBitmap(bits[3])
+            }
+            3 -> {
+                binding.img1.setImageBitmap(bits[0])
+                binding.img2.setImageBitmap(bits[1])
+                binding.img3.setImageBitmap(bits[2])
+                binding.img4.setImageBitmap(bits[3])
+                binding.img5.setImageBitmap(bits[4])
+                binding.img6.setImageBitmap(bits[5])
             }
         }
-        binding.savedImgs.setImageBitmap(bit)
-        binding.textView2.text="매우 만족/블랙/트레이셔널"
+        when (numBit) {
+            1 -> {
+                binding.text1.text=texts[0]
+                binding.text2.text=texts[1]
+                binding.text3.text=texts[2]
+            }
+            2 -> {
+                binding.text1.text=texts[0]
+                binding.text2.text=texts[1]
+                binding.text3.text=texts[2]
+                binding.text4.text=texts[3]
+                binding.text5.text=texts[4]
+                binding.text6.text=texts[5]
+            }
+            3 -> {
+                binding.text1.text=texts[0]
+                binding.text2.text=texts[1]
+                binding.text3.text=texts[2]
+                binding.text4.text=texts[3]
+                binding.text5.text=texts[4]
+                binding.text6.text=texts[5]
+                binding.text7.text=texts[6]
+                binding.text8.text=texts[7]
+                binding.text9.text=texts[8]
+            }
+        }
 
+        when(numBit){
+            1->{
+                binding.img3.visibility=View.INVISIBLE
+                binding.img4.visibility=View.INVISIBLE
+                binding.img5.visibility=View.INVISIBLE
+                binding.img6.visibility=View.INVISIBLE
+                binding.text4.text=""
+                binding.text5.text=""
+                binding.text6.text=""
+                binding.text7.text=""
+                binding.text8.text=""
+                binding.text9.text=""
+            }
+            2->{
+                binding.img5.visibility=View.INVISIBLE
+                binding.img6.visibility=View.INVISIBLE
+                binding.text7.text=""
+                binding.text8.text=""
+                binding.text9.text=""
+            }
+        }
 
-
-
-
-        gohome.setOnClickListener {
+        goHome.setOnClickListener {
             val myIntent = Intent(this, MainActivity::class.java)
             startActivity(myIntent)
         }
+    }
+
+    private fun setTexts() {
+        val dirs = File("$filesDir/recommend")
+        val fileDirs=dirs.listFiles()
+        texts.clear()
+        if(fileDirs != null){
+            if(fileDirs.isEmpty()){
+                Log.i("warning","cannot find dir or no files")
+            }else{
+                for(tmpFile in fileDirs){
+                    var temp=""
+                    Log.i("files", tmpFile.name)
+                    val path="$dirs/${tmpFile.name}"
+                    val tmp=File(path)
+                    if(".txt" in path){
+                        val reader=tmp.bufferedReader()
+                        val iterator = reader.lineSequence().iterator()
+
+                        while(iterator.hasNext()) {
+                            temp+=iterator.next()
+                        }
+                        reader.close()
+                    }
+                    if(temp.split("/")[0].isNotEmpty()){
+                        texts.addAll(temp.split("/"))
+                    }
+
+                }
+            }
+        }else{
+            Log.i("error","filedirs null")
+        }
+
+        Log.i("texts:",texts.toString())
+    }
+
+    private fun setBits() {
+        val dirs = File("$filesDir/recommend")
+        val fileDirs=dirs.listFiles()
+        bits.clear()
+        if(fileDirs != null){
+            if(fileDirs.isEmpty()){
+                Log.i("warning","cannot find dir or no files")
+            }else{
+                for(tmpFile in fileDirs){
+                    Log.i("files", tmpFile.name)
+                    val path="$dirs/${tmpFile.name}"
+                    if("_0.jpg" in path){
+                        bits.add(BitmapFactory.decodeFile(path))
+                    }
+                    else if("_1.jpg" in path){
+                        bits.add(BitmapFactory.decodeFile(path))
+                    }
+                }
+            }
+        }else{
+            Log.i("error","filedirs null")
+        }
+
+
     }
 }

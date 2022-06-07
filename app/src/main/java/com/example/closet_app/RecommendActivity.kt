@@ -22,9 +22,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
+import java.io.*
 
 class RecommendActivity : AppCompatActivity() {
     lateinit var mRetrofit: Retrofit // 사용할 레트로핏 객체입니다.
@@ -44,15 +42,27 @@ class RecommendActivity : AppCompatActivity() {
     val labels=ArrayList<String>()
     val scores=ArrayList<Int>()
 
-
+    val savedClothes=ArrayList<String>()
+    val savedClothesName=ArrayList<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recommend)
         setRetrofit()
         val gohome: Button = findViewById<View>(R.id.gohome) as Button
+
+        //binding으로 합시다...
+        //너무 많아요 ㅠ
+
         imageView=findViewById(R.id.recommendImg)
         val fromCloset=findViewById<ImageView>(R.id.fromClosetImg)
+
         val gSatisfaction: RadioGroup = findViewById<View>(R.id.gSatisfaction) as RadioGroup
+        val radioBtn1=findViewById<RadioButton>(R.id.veryUnsatisfied)
+        val radioBtn2=findViewById<RadioButton>(R.id.unsatisfied)
+        val radioBtn3=findViewById<RadioButton>(R.id.good)
+        val radioBtn4=findViewById<RadioButton>(R.id.satisfied)
+        val radioBtn5=findViewById<RadioButton>(R.id.verySatisfied)
+
         val saveSatisfaction: Button = findViewById<View>(R.id.saveSatisfaction) as Button
         val saveResult: Button = findViewById<View>(R.id.saveResult) as Button
         val retry: Button = findViewById<View>(R.id.retry) as Button
@@ -61,21 +71,67 @@ class RecommendActivity : AppCompatActivity() {
         val styleOption = findViewById<TextView>(R.id.styleOption)
         var forCloset:Int=0
 
+        var satisfaction:String=""
+
+
+        loadinginit()
+
         saveSatisfaction.setOnClickListener {
+
+            if(radioBtn1.isChecked){
+                satisfaction="매우 불만족"
+            }
+            if(radioBtn2.isChecked){
+                satisfaction="불만족"
+            }
+            if(radioBtn3.isChecked){
+                satisfaction="보통"
+            }
+            if(radioBtn4.isChecked){
+                satisfaction="만족"
+            }
+            if(radioBtn5.isChecked){
+                satisfaction="매우 만족"
+            }
+            Log.i("satisfaction",satisfaction.toString())
             Toast.makeText(this, "만족도를 저장했습니다!", Toast.LENGTH_SHORT).show()
             gSatisfaction.clearCheck()
         }
 
         saveResult.setOnClickListener {
-            //val myIntent = Intent(this, ClosetActivity::class.java)
-            Toast.makeText(this, "결과를 저장했습니다!", Toast.LENGTH_SHORT).show()
+            val style=styleOption.text.toString()
+            val color=colorOption.text.toString()
+            var name=0
+            val dirs = File("$filesDir/recommend")
+            if (!dirs.exists()){
+                dirs.mkdirs()
+            }
+            if(dirs.isDirectory) {	Log.i("dir", "디렉토리입니다..: $filesDir/recommend")}
+            name= dirs.listFiles()?.size?.div(2) ?: 0
 
+            val file = File("$filesDir/recommend/${name}_0.jpg")
+            file.createNewFile()
+            fromCloset.drawable.toBitmap().compress(Bitmap.CompressFormat.JPEG,100,FileOutputStream(file))
+            //추천에서 받아온것.
+            val file3= File("$filesDir/recommend/${name}_1.jpg")
+            file.createNewFile()
+            imageView.drawable.toBitmap().compress(Bitmap.CompressFormat.JPEG,100,FileOutputStream(file3))
+
+
+            val file2=File("$filesDir/recommend/$name.txt")
+            val printWriter= FileWriter(file2)
+            val buffer= BufferedWriter(printWriter)
+            buffer.write("$satisfaction/$style/$color")
+            buffer.close()
+
+            val myIntent = Intent(this, SavedClothActivity::class.java)
+            startActivity(myIntent)
+            finish()
         }
 
         //내부저장소에서 불러와서 Dialog로, Dialog에서 이미지 클릭하면 그 이미지가 추가됨
         retry.setOnClickListener {
             val dialog = recommendDialog(this)
-            Log.i("솔직히","여기죠?")
             dialog.showDialog()
             dialog.setOnClickListener(object : recommendDialog.OnDialogClickListener {
                 override fun onClicked(image: Drawable,int: Int) {
@@ -85,11 +141,6 @@ class RecommendActivity : AppCompatActivity() {
                 }
             })
         }
-
-        //일단 모델과 API를 고쳐서 색깔과 상의 하의를 고려하게 해야함
-        //기존 저장할때 카테고리를 추가해서 저장해야하며,
-        //이미지와 함께 컬러, 카테고리를 보내서
-        // 추천뷰 대충 만들고, 발표자료 만들어야됨
 
 
         // 이걸로 내부 저장소에 있는 옷을 가져와서 api에 보내보죠.
@@ -126,6 +177,38 @@ class RecommendActivity : AppCompatActivity() {
 
     }
 
+    private fun loadinginit() {
+        val tmp = File("$filesDir/save/")
+        val fileDirs=tmp.listFiles()
+
+        if(fileDirs != null){
+            if(fileDirs.isEmpty()){
+                Log.i("warning","cannot find dir or no files")
+            }else{
+                for(tmpFile in fileDirs){
+                    Log.i("files", tmpFile.name)
+                    val path="$tmp/${tmpFile.name}"
+                    var temp=""
+                    if(".txt" in path){
+                        val reader=tmpFile.bufferedReader()
+                        val iterator = reader.lineSequence().iterator()
+
+                        while(iterator.hasNext()) {
+                            temp+=iterator.next()
+                        }
+                        reader.close()
+                        savedClothes.add(temp)
+                        savedClothesName.add(tmpFile.name)
+                    }
+                }
+                Log.i("savedClothes",savedClothes.toString())
+                Log.i("savedClothes",savedClothesName.toString())
+            }
+        }else{
+            Log.i("error","filedirs null")
+        }
+    }
+
     private fun findCategory(forCloset: Int): String {
         val tmp = File("$filesDir/save/$forCloset.txt")
         var temp=""
@@ -155,7 +238,10 @@ class RecommendActivity : AppCompatActivity() {
             .baseUrl(getString(R.string.baseUrl))
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-//http://10.0.2.2:5000
+//http://10.0.2.2:5000  //에뮬레이터 구동
+
+
+        // http://192.168.115.236:5000</string>    핫스팟시,
         //인터페이스로 만든 레트로핏 api요청 받는 것 변수로 등록
         mRetrofitAPI = mRetrofit.create(API.RetrofitAPI::class.java)
     }
@@ -216,12 +302,41 @@ class RecommendActivity : AppCompatActivity() {
             Log.i("check score",scores.toString())
             if(scores.contains(2)){
                 val idx:Int=scores.indexOf(2)
-                imageView.setImageBitmap(bit[idx])
+                val findLabel=labels[idx]
+                Log.i("label?",findLabel)
+                if(savedClothes.contains(findLabel)){
+                    val findFile= savedClothesName[savedClothes.indexOf(findLabel)].replace(".txt",".jpg")
+                    val dirs = File("$filesDir/save")
+                    val path="$dirs/${findFile}"
+                    Log.i("check path",path)
+                    if(".jpg" in path){
+                        imageView.setImageBitmap(BitmapFactory.decodeFile(path))
+                    }
+                }
+                else{
+                    imageView.setImageBitmap(bit[idx])
+                }
+
             }
             else if(scores.contains(0)){
                 val idx=scores.indexOf(0)
-                imageView.setImageBitmap(bit[idx])
-            }else{
+                val findLabel=labels[idx]
+                Log.i("label?",findLabel)
+                if(savedClothes.contains(findLabel)) {
+                    val findFile =
+                        savedClothesName[savedClothes.indexOf(findLabel)].replace(".txt", ".jpg")
+                    val dirs = File("$filesDir/save")
+                    val path = "$dirs/${findFile}"
+                    Log.i("check path", path)
+                    if (".jpg" in path) {
+                        imageView.setImageBitmap(BitmapFactory.decodeFile(path))
+                    }
+                }
+                else{
+                    imageView.setImageBitmap(bit[idx])
+                }
+            }
+            else{
                 imageView.setImageBitmap(bit[0])
             }
 
@@ -238,58 +353,6 @@ class RecommendActivity : AppCompatActivity() {
 
 
 
-
-    //http요청을 보냈고 이건 응답을 받을 콜벡메서드
-    private val mRetrofitCallback = (object : retrofit2.Callback<ImgDataModel> {
-        override fun onResponse(call: Call<ImgDataModel>, response: Response<ImgDataModel>) {
-            val result = response.body()
-            val img0=stringToBitmap(result!!.img0)
-            val img1=stringToBitmap(result.img1)
-            val img2=stringToBitmap(result.img2)
-            val img3=stringToBitmap(result.img3)
-            val img4=stringToBitmap(result.img4)
-            val img5=stringToBitmap(result.img5)
-            val img6=stringToBitmap(result.img6)
-            val img7=stringToBitmap(result.img7)
-            bit.add(img0)
-            bit.add(img1)
-            bit.add(img2)
-            bit.add(img3)
-            bit.add(img4)
-            bit.add(img5)
-            bit.add(img6)
-            bit.add(img7)
-            imageView.setImageBitmap(img1)
-          //  saveBitmap(img1,1.toString())
-            Log.i("fifth","maybehere")
-            Log.i("bits?:", bit[1].height.toString())
-           // Toast.makeText(this@RecommendActivity,"추천 완료",Toast.LENGTH_SHORT).show()
-
-
-        }
-
-        override fun onFailure(call: Call<ImgDataModel>, t: Throwable) {
-            t.printStackTrace()
-            Log.i("failureT",t.message.toString())
-        }
-
-
-    })//Json객체를 응답받는 콜백 객체
-
-    private fun saveBitmap(bitmap: Bitmap, name: String) {
-
-        //내부저장소 캐시 경로를 받아옵니다.
-        //지금은 그냥 filesdir로 했지만,
-        //나중에는 dir에 디렉토리를 만들어서 /files/cropped/1.jpg 이런식으로 저장하는게 좋겟죠.
-
-        val storage=filesDir
-        val filename= "saved$name.jpg"
-
-        val tmpFile=File(storage,filename)
-        tmpFile.createNewFile()
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100, FileOutputStream(tmpFile))
-
-    }
     private fun bitmapToString(bitmap: Bitmap): String {
 
         val byteArrayOutputStream = ByteArrayOutputStream()
@@ -318,3 +381,54 @@ class RecommendActivity : AppCompatActivity() {
 //    val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, "여기에 이미지 uri")
 //
 //    bitmapToString(bitmap)
+//http요청을 보냈고 이건 응답을 받을 콜벡메서드
+//private val mRetrofitCallback = (object : retrofit2.Callback<ImgDataModel> {
+//    override fun onResponse(call: Call<ImgDataModel>, response: Response<ImgDataModel>) {
+//        val result = response.body()
+//        val img0=stringToBitmap(result!!.img0)
+//        val img1=stringToBitmap(result.img1)
+//        val img2=stringToBitmap(result.img2)
+//        val img3=stringToBitmap(result.img3)
+//        val img4=stringToBitmap(result.img4)
+//        val img5=stringToBitmap(result.img5)
+//        val img6=stringToBitmap(result.img6)
+//        val img7=stringToBitmap(result.img7)
+//        bit.add(img0)
+//        bit.add(img1)
+//        bit.add(img2)
+//        bit.add(img3)
+//        bit.add(img4)
+//        bit.add(img5)
+//        bit.add(img6)
+//        bit.add(img7)
+//        imageView.setImageBitmap(img1)
+//        //  saveBitmap(img1,1.toString())
+//        Log.i("fifth","maybehere")
+//        Log.i("bits?:", bit[1].height.toString())
+//        // Toast.makeText(this@RecommendActivity,"추천 완료",Toast.LENGTH_SHORT).show()
+//
+//
+//    }
+//
+//    override fun onFailure(call: Call<ImgDataModel>, t: Throwable) {
+//        t.printStackTrace()
+//        Log.i("failureT",t.message.toString())
+//    }
+//
+//
+//})//Json객체를 응답받는 콜백 객체
+//
+//private fun saveBitmap(bitmap: Bitmap, name: String) {
+//
+//    //내부저장소 캐시 경로를 받아옵니다.
+//    //지금은 그냥 filesdir로 했지만,
+//    //나중에는 dir에 디렉토리를 만들어서 /files/cropped/1.jpg 이런식으로 저장하는게 좋겟죠.
+//
+//    val storage=filesDir
+//    val filename= "saved$name.jpg"
+//
+//    val tmpFile=File(storage,filename)
+//    tmpFile.createNewFile()
+//    bitmap.compress(Bitmap.CompressFormat.JPEG,100, FileOutputStream(tmpFile))
+//
+//}

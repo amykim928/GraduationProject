@@ -1,44 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SavedClothActivity">
+    android:orientation="vertical"
+    tools:context=".ClosetActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="저장한 조합"
+            android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/gohome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:backgroundTint="#A476F6"
+            android:text="GO HOME"
+            tools:ignore="MissingConstraints" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="141dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/clothes_hanger" />
+
+        <ImageView
+            android:id="@+id/img2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/clothes_hanger" />
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="saved Clothes"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.535"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.063" />
+        android:text="보통"
+        android:textSize="17sp" />
 
-    <Button
-        android:id="@+id/gohome"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9" />
+        android:text="페미닌"
+        android:textSize="17sp" />
 
-    <ImageView
-        android:id="@+id/savedImgs"
-        android:layout_width="214dp"
-        android:layout_height="214dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.441"
-        app:srcCompat="@drawable/clothes_hanger" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="하늘"
+        android:textSize="17sp" />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="141dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/clothes_hanger" />
+
+        <ImageView
+            android:id="@+id/img4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/clothes_hanger" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="추천 되지 않았음"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/text5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="추천 되지 않았음"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/text6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="추천 되지 않았음"
+        android:textSize="17sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="141dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/clothes_hanger" />
+
+        <ImageView
+            android:id="@+id/img6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/clothes_hanger" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="추천 되지 않았음."
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/text8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="추천 되지 않았음"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/text9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="추천 되지 않았음"
+        android:textSize="17sp" />
+
+</LinearLayout>

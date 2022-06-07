@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">closet_app</string>
-    <string name="baseUrl">http://192.168.115.236:5000</string>
+    <string name="baseUrl">http://10.0.2.2:5000</string>
 </resources>

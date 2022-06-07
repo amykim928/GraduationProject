@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +15,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.closet_app.databinding.ActivityClosetBinding
+import java.io.BufferedWriter
 import java.io.File
+import java.io.FileOutputStream
+import java.io.FileWriter
 import kotlin.collections.ArrayList
 
 class ClosetActivity : AppCompatActivity() {
@@ -35,14 +40,21 @@ class ClosetActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //onCreate에 너무 많으니 정신없어서 initVariable로 분리했습니다.
+
         setBits()
         initVariable()
 
     }
 
+
     private fun setBits() {
         val dirs = File("$filesDir/save")
+        if (!dirs.exists()){
+            dirs.mkdirs()
+        }
         val fileDirs=dirs.listFiles()
+
+
 
         if(fileDirs != null){
             if(fileDirs.isEmpty()){
@@ -59,6 +71,23 @@ class ClosetActivity : AppCompatActivity() {
             }
         }else{
             Log.i("error","filedirs null")
+        }
+        val inits = File("$filesDir/save/3.jpg")
+        if (!inits.exists()){
+            inits.createNewFile()
+            val assetManager=resources.assets.open("blackskirt.jpg")
+            val mkbitmap= Drawable.createFromStream(assetManager,null) as BitmapDrawable
+            val finalBit=mkbitmap.bitmap
+            finalBit.compress(Bitmap.CompressFormat.JPEG,100, FileOutputStream(inits))
+            bit.add(finalBit)
+        }
+        val init2=File("$filesDir/save/3.txt")
+        if (!init2.exists()){
+            init2.createNewFile()
+            val printWriter= FileWriter(init2)
+            val buffer= BufferedWriter(printWriter)
+            buffer.write("스커트")
+            buffer.close()
         }
 
 

@@ -10,6 +10,7 @@ import com.example.closet_app.ClosetActivity
 import com.example.closet_app.R
 import com.example.closet_app.RecommendActivity
 
+//이 Activity가 사용되지 않아, 사용하지 않았네요.
 class ClosetResultDialogActivity(context: Context){
     private val dialog = Dialog(context)
 

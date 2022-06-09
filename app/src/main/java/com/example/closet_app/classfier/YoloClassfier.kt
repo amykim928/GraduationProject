@@ -1,11 +1,11 @@
-package com.example.graduateproject.classfiers
+package com.example.closet_app.classfier
 
 import android.content.res.AssetManager
 import android.graphics.Bitmap
 import android.graphics.RectF
 import android.os.Build
 import android.util.Log
-import com.example.graduateproject.env.Utils
+import com.example.graduateproject.classfiers.YoloInterfaceClassfier
 import com.example.graduateproject.env.Utils.loadModelFile
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.gpu.GpuDelegate
@@ -13,18 +13,25 @@ import org.tensorflow.lite.nnapi.NnApiDelegate
 import java.io.*
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.channels.FileChannel
 import java.util.*
 
-class YoloClassfier :YoloInterfaceClassfier {
+
+
+
+//YOLO모델을 쓰기 위해 기능들을 구현해둔 곳입니다.
+//
+
+class YoloClassfier : YoloInterfaceClassfier {
     // Config values.
     private val OUTPUT_WIDTH_TINY: IntArray = intArrayOf(2535, 2535)
     private val OUTPUT_WIDTH_FULL = intArrayOf(10647, 10647)
-    private val MASKS_TINY = arrayOf(intArrayOf(3, 4, 5), intArrayOf(1, 2, 3))
-    private val ANCHORS_TINY = intArrayOf(
-        23, 27, 37, 58, 81, 82, 81, 82, 135, 169, 344, 319
-    )
-    private val XYSCALE_TINY = floatArrayOf(1.05f, 1.05f)
+
+
+//    private val MASKS_TINY = arrayOf(intArrayOf(3, 4, 5), intArrayOf(1, 2, 3))
+//    private val ANCHORS_TINY = intArrayOf(
+//        23, 27, 37, 58, 81, 82, 81, 82, 135, 169, 344, 319
+//    )
+//    private val XYSCALE_TINY = floatArrayOf(1.05f, 1.05f)
 
     private val labels = Vector<String>()
     private val NUM_THREADS = 4
@@ -51,11 +58,13 @@ class YoloClassfier :YoloInterfaceClassfier {
         labelFilename: String,
         isQuantized: Boolean
     ): YoloClassfier {
-        val d=YoloClassfier()
+        val d= YoloClassfier()
         val actualFilename = labelFilename.split("file:///android_asset/").toTypedArray()[1]
         val labelsInput = assetManager.open(actualFilename)
         val br = BufferedReader(InputStreamReader(labelsInput))
         var line: String?
+
+
         while (br.readLine().also { line = it } != null) {
             Log.i("Label Log ",line!!)
             d.labels.add(line)
@@ -65,7 +74,6 @@ class YoloClassfier :YoloInterfaceClassfier {
             val options = Interpreter.Options()
             options.setNumThreads(NUM_THREADS)
             if (isNNAPI) {
-                Log.i("check","1")
                 var nnApiDelegate: NnApiDelegate? = null
                 // Initialize interpreter with NNAPI delegate for Android Pie or above
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -230,12 +238,8 @@ class YoloClassfier :YoloInterfaceClassfier {
         val detections = ArrayList<YoloInterfaceClassfier.Recognition>()
         val outputMap: MutableMap<Int, Any> = HashMap()
         outputMap[0] = Array(1) {
-            Array(
-                OUTPUT_WIDTH_FULL[0]
-            ) {
-                FloatArray(
-                    4
-                )
+            Array(OUTPUT_WIDTH_FULL[0]) {
+                FloatArray(4)
             }
         }
         outputMap[1] = Array(1) {

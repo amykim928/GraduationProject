@@ -27,6 +27,9 @@ class MainActivity : AppCompatActivity() {
         val closet: Button = binding.closet
         val savedCloth: Button = binding.savedCloth
 
+
+
+
         recommend.setOnClickListener {
             val myIntent = Intent(this, RecommendActivity::class.java)
             startActivity(myIntent)

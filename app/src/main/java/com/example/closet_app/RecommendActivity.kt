@@ -27,35 +27,47 @@ import java.io.*
 class RecommendActivity : AppCompatActivity() {
     lateinit var mRetrofit: Retrofit // 사용할 레트로핏 객체입니다.
     lateinit var mRetrofitAPI: API.RetrofitAPI // 레트로핏 api객체입니다.
-    lateinit var mCallImgList: Call<ImgDataModel> // Json형식의 데이터를 요청하는 객체입니다.
 
+    lateinit var mCallImgList2: Call<ImgLabelModel> //refrofit을 통해 받아온 데이터가 저장됩니다.
 
-    lateinit var mCallImgList2: Call<ImgLabelModel>
-
+    //파이썬에서 라벨을 정수로 해놔서, 다시 변환해줘야됩니다.
     val ImgMap= hashMapOf("0" to "탑", "1" to "블라우스", "2" to "티셔츠", "3" to "니트웨어", "4" to "셔츠", "5" to "브라탑",
     "6" to "후드티", "7" to "청바지", "8" to "팬츠", "9" to "스커트", "10" to "레깅스", "11" to "조거팬츠", "12" to "코트",
         "13" to "재킷", "14" to "점퍼", "15" to "패딩", "16" to "베스트", "17" to "가디건", "18" to "짚업", "19" to "드레스", "20" to "점프수트"
     )
     lateinit var imageView: ImageView
-    //detectActivity에서 ArrayList<Uri>를 건네주는 식으로 바꾸려고 하네요.
+
+    //앞에서 자주 봤던 bit와, bit의 정보가 담긴 labels입니다.
     val bit = ArrayList<Bitmap>()
     val labels=ArrayList<String>()
+
+    //파이썬에서, 코틀린에서 보내준 정보를 바탕으로 점수를 매겨서 반환합니다.
+    //이를 저장해서, 그 외 feature와 비교해 이미지를 띄워줄겁니다.
     val scores=ArrayList<Int>()
+
+    //의상과, 의상의 파일명이 적혀 있습니다.
 
     val savedClothes=ArrayList<String>()
     val savedClothesName=ArrayList<String>()
+
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recommend)
+        //retrofit 초기화
         setRetrofit()
         val gohome: Button = findViewById<View>(R.id.gohome) as Button
 
-        //binding으로 합시다...
-        //너무 많아요 ㅠ
+        //binding으로 바꿀껄 그랬나요...
+        //xml에 있는 것을 findViewById로 찾았는데, imageView는 밖에서도 쓸일이 있어서 바꾸었습니다.
 
         imageView=findViewById(R.id.recommendImg)
         val fromCloset=findViewById<ImageView>(R.id.fromClosetImg)
 
+        //현아님이 주실 때는 없었는데, 뭐가 클릭됬는지 알려면 Button까지 찾아야하더라고요.
         val gSatisfaction: RadioGroup = findViewById<View>(R.id.gSatisfaction) as RadioGroup
         val radioBtn1=findViewById<RadioButton>(R.id.veryUnsatisfied)
         val radioBtn2=findViewById<RadioButton>(R.id.unsatisfied)
@@ -69,13 +81,16 @@ class RecommendActivity : AppCompatActivity() {
         val getCloset: Button = findViewById<View>(R.id.getCloth) as Button
         val colorOption = findViewById<TextView>(R.id.colorOption)
         val styleOption = findViewById<TextView>(R.id.styleOption)
-        var forCloset:Int=0
 
+        //다이얼로그에서 이미지를 선택하는데 어떤 이미지를 가져올지 도와주는 변수
+        var forCloset:Int=0
+        //라디오 버튼에서 string 저장
         var satisfaction:String=""
 
-
+        //이미지를 savedClothes에 저장
         loadinginit()
 
+        //라디오 버튼에서 만족도 가져오기
         saveSatisfaction.setOnClickListener {
 
             if(radioBtn1.isChecked){
@@ -99,6 +114,8 @@ class RecommendActivity : AppCompatActivity() {
         }
 
         saveResult.setOnClickListener {
+            //가져온 정보들을, /recommend에 저장하는 버튼입니다.
+
             val style=styleOption.text.toString()
             val color=colorOption.text.toString()
             var name=0
@@ -137,7 +154,7 @@ class RecommendActivity : AppCompatActivity() {
                 override fun onClicked(image: Drawable,int: Int) {
                     fromCloset.setImageDrawable(image)
                     forCloset=int
-                //    Log.d("forCloset",int.toString())
+
                 }
             })
         }
@@ -148,18 +165,14 @@ class RecommendActivity : AppCompatActivity() {
 
             val bitString = bitmapToString(fromCloset.drawable.toBitmap())
             val category=findCategory(forCloset).toString()
-  //         mCallImgList = mRetrofitAPI.postImgPredict(bitString)  // RetrofitAPI에서 Json객체 요청을 반환하는 메서드를 불러옵니다.
 
-//           mCallImgList.enqueue(mRetrofitCallback)
             val hashMap= hashMapOf<String, ImageFeatures>(Pair(bitString,ImageFeatures(colorOption.text.toString(),category)))
-
+// RetrofitAPI에서 Json객체 요청을 반환하는 메서드를 불러옵니다.
+            //hashmap을 넣어서 파이썬에 정보를 요청한 단계라고 보면 될 것같습니다. mRetrofitCallback2으로 가면 어떻게 작동할지가 보입니다.
             mCallImgList2=mRetrofitAPI.postPredict(hashMap)
             mCallImgList2.enqueue(mRetrofitCallback2)
-//            Log.d("checkHashMap",labels[0].toString())
+
         }
-
-
-
 
         gohome.setOnClickListener {
             val myIntent = Intent(this, MainActivity::class.java)
@@ -170,10 +183,6 @@ class RecommendActivity : AppCompatActivity() {
         colorOption.text = intent.getStringExtra("color")
         styleOption.text = intent.getStringExtra("style")
 
-
-        //해야할 것->내부 저장소에서 의상 불러오기
-        //의상을 불러와  base64로 바꾸고, json으로 파싱해서 서버로 보내고
-        //서버(모델)에서 값을 받아옴
 
     }
 
@@ -201,8 +210,6 @@ class RecommendActivity : AppCompatActivity() {
                         savedClothesName.add(tmpFile.name)
                     }
                 }
-                Log.i("savedClothes",savedClothes.toString())
-                Log.i("savedClothes",savedClothesName.toString())
             }
         }else{
             Log.i("error","filedirs null")
@@ -239,22 +246,27 @@ class RecommendActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 //http://10.0.2.2:5000  //에뮬레이터 구동
-
-
         // http://192.168.115.236:5000</string>    핫스팟시,
         //인터페이스로 만든 레트로핏 api요청 받는 것 변수로 등록
         mRetrofitAPI = mRetrofit.create(API.RetrofitAPI::class.java)
     }
+
+
+
     //http요청을 보냈고 이건 응답을 받을 콜벡메서드
+    //프로토타입이라서 막코딩 했어요 ㅠㅠ 이해해주셔요...
     private val mRetrofitCallback2 = (object : retrofit2.Callback<ImgLabelModel> {
         override fun onResponse(call: Call<ImgLabelModel>, response: Response<ImgLabelModel>) {
             val result = response.body()
+            //초기화하지 않으면 다시 activity로 돌아왔을 때 지난 번 저장하지 않은 결과가 남아있게됨
             if(!bit.isEmpty()){
                 bit.clear()
                 scores.clear()
                 labels.clear()
             }
-            Log.i("need print result",result.toString())
+
+            //이미지를 8개, 정보를 8개, 스코어를 8개를 받습니다.
+            //각각 bit, labels, score1에 저장합니다.
             val img0=stringToBitmap(result!!.img0[0].toString())
             val img1=stringToBitmap(result.img1[0].toString())
             val img2=stringToBitmap(result.img2[0].toString())
@@ -299,25 +311,33 @@ class RecommendActivity : AppCompatActivity() {
             val score7=result.img7[2].toString().toInt()
 
             scores.addAll(listOf(score0,score1,score2,score3,score4,score5,score6,score7))
-            Log.i("check score",scores.toString())
+
+
+            //스코어중 가장 높은 점수가 2점입니다.
             if(scores.contains(2)){
+                //인덱스를 찾고
                 val idx:Int=scores.indexOf(2)
+                //그 의상의 종류를 찾고(스커트)
                 val findLabel=labels[idx]
-                Log.i("label?",findLabel)
+                //저장된 의상에 스커트가 있다면
                 if(savedClothes.contains(findLabel)){
+                    //스커트와 매칭 되면 이미지를 불러와서
                     val findFile= savedClothesName[savedClothes.indexOf(findLabel)].replace(".txt",".jpg")
                     val dirs = File("$filesDir/save")
                     val path="$dirs/${findFile}"
                     Log.i("check path",path)
+                    //이미지뷰에 세팅합니다.
                     if(".jpg" in path){
                         imageView.setImageBitmap(BitmapFactory.decodeFile(path))
                     }
                 }
+                //점수가 높았는데, 매칭되는 의상이 없으면, 그냥 점수 높은 것을 보여줘지요.
                 else{
                     imageView.setImageBitmap(bit[idx])
                 }
 
             }
+            //0점일떄도 방법은 같아요.
             else if(scores.contains(0)){
                 val idx=scores.indexOf(0)
                 val findLabel=labels[idx]
@@ -336,11 +356,11 @@ class RecommendActivity : AppCompatActivity() {
                     imageView.setImageBitmap(bit[idx])
                 }
             }
+            //점수가 0점 미만일떄는 그냥 처음것을 보여줍니다.
+            //나중에는 여기에 다이얼로그가 필요할 것 같습니다.
             else{
                 imageView.setImageBitmap(bit[0])
             }
-
-            Log.i("check Label",label0)
         }
 
         override fun onFailure(call: Call<ImgLabelModel>, t: Throwable) {
@@ -352,7 +372,7 @@ class RecommendActivity : AppCompatActivity() {
     })//Json객체를 응답받는 콜백 객체
 
 
-
+    //비트맵을 json 형식으로 보내기 위해 bitmap->tostring
     private fun bitmapToString(bitmap: Bitmap): String {
 
         val byteArrayOutputStream = ByteArrayOutputStream()
@@ -363,7 +383,7 @@ class RecommendActivity : AppCompatActivity() {
 
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
-
+    //파이썬 모델도 string을 보내주는데, 그 string->bitmap으로
     private fun stringToBitmap(encodedString: String): Bitmap {
 
         val encodeByte = Base64.decode(encodedString, Base64.DEFAULT)

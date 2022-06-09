@@ -7,12 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import com.example.closet_app.databinding.ActivitySavedClothBinding
 import java.io.File
 
+//추천된 옷을 볼 수 있는 Activity입니다
 class SavedClothActivity : AppCompatActivity() {
-
+    //binding과 bits, texts 선언
     lateinit var binding: ActivitySavedClothBinding
     private val bits=ArrayList<Bitmap>()
     val texts=ArrayList<String>()
@@ -104,6 +104,9 @@ class SavedClothActivity : AppCompatActivity() {
         }
     }
 
+    // recommend경로에서 txt를 읽어오고
+    // txt의 값을 split으로 나눈뒤, texts에 저장합니다.
+    // [블랙, 트레디셔널, 재킷]
     private fun setTexts() {
         val dirs = File("$filesDir/recommend")
         val fileDirs=dirs.listFiles()
@@ -138,7 +141,8 @@ class SavedClothActivity : AppCompatActivity() {
 
         Log.i("texts:",texts.toString())
     }
-
+    // recommend경로에서 txt를 읽어오고
+    // jpg를 두가지로 나눠서 저장한 것을 읽어오고, texts에 저장합니다.
     private fun setBits() {
         val dirs = File("$filesDir/recommend")
         val fileDirs=dirs.listFiles()
